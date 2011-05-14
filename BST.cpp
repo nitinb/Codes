@@ -254,6 +254,18 @@ void iterative_postorder(node *root){
    }
 }
 
+void level_order(node* temp){
+    std::queue<node *> Q;
+    
+    if(temp != NULL) Q.push(temp);
+    while( !Q.empty() ){
+       temp = Q.front();
+       Q.pop();
+       std::cout << temp->data << " ";
+       if(temp->left != NULL) Q.push(temp->left);
+       if(temp->right != NULL) Q.push(temp->right);
+    }
+}
 
 int main(){
   int value;
@@ -274,7 +286,7 @@ int main(){
   std::cout << std::endl;
   iterative_preorder(root);
   std::cout << std::endl;
-//  iterative_postorder(root);
+  level_order(root);
   std::cout << std::endl;
 
   delete_n(11);
@@ -296,4 +308,5 @@ int main(){
   delete_n(40);
   rec_inorder(root);
   std::cout << std::endl;
+  while(1){continue;}
 }

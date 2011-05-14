@@ -1,6 +1,6 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : BST.cpp
+* File Name : inorder_s.cpp
 
 * Purpose :
 
@@ -88,20 +88,24 @@ void rec_inorder( node * root){
 
 /*
  * @desc: 
- *   FIND inorder_s of a key from BStree
+ *   recursively FIND inorder_s of a key from BStree
  * @param:
  *   key whose inorder_s to find 
+   *
+   * inorder successor of a node =>
+   *   if right child
+   *      leftmost child of right sub-tree
+   *   else
+   *      first left ancestor of node 
  */
-node* inorder_s (int key){
-  node *temp = root, *parent = NULL;
-  bool flag = false;
-
-  // search for the key
+node* inorder_s(int key){
+  node* l_parent = NULL;
+  node* temp = root;
+  
   while(1){
     if(temp == NULL || temp->data == key) break;
-    parent = temp;
-    if(temp->data >= key) { temp = temp->left; flag = true; }
-    else { temp = temp->right; flag = false; }
+    if(temp->data > key) { l_parent = temp; temp = temp->left; }
+    else { temp = temp->right; }
   }
   /*
    * temp: node whose inorder_s we need to find ( can be NULL if key not found in tree )
@@ -109,21 +113,16 @@ node* inorder_s (int key){
    *   ( if temp is root node of tree then parent is NULL )
    */
   if(temp == NULL ) return NULL;
-
-  /* inorder successor of a node =>
-   *   if left child then parent of node
-   *   if right child
-   *      leftmost child of right sub-tree ( if right sub-tree is there )
-   *        OR first left ancestor of node 
-   */
-  node *inorder_s;
+  std::cout << "found the node " << temp->data << std::endl;                  
+    
+  node* inorder_s;
   if(temp->right != NULL){
     inorder_s = temp->right;
     while(inorder_s->left != NULL) { inorder_s = inorder_s->left; }
   }
   else{
-   inorder_s = parent; 
-  } 
+    inorder_s = l_parent;
+  }
   return inorder_s;
 }
 
@@ -140,11 +139,11 @@ int main(){
   rec_inorder(root);
   std::cout << std::endl;
 
-  node * _ret;
+  node* _ret;
   while( value != -2){
     std::cin >> value;
     _ret = inorder_s(value);
     if( _ret ) std::cout << "inorder successor : " << _ret->data << std::endl;
-    else std::cout << value << " doesn't exist in tree " << std::endl;
+    else std::cout << value << ", no inorder successor " << std::endl;
   }
 }
