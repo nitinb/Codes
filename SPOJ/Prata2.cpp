@@ -1,6 +1,6 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : Prata.cpp
+* File Name : Prata2.cpp
 
 * Purpose :
 
@@ -22,6 +22,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <vector>
 #include <map>
 #include <set>
+#include <algorithm>
 
 #define DEBUG 1
 
@@ -35,46 +36,50 @@ struct cook {
      }     
 };
 
-class compare {
-   public:
-      bool operator() (cook *a, cook *b){
-         return a->next_time > b->next_time ? true : false;
-      }
-};
+bool compare_heap(cook *a, cook *b){
+     return a->next_time > b->next_time ? true : false;
+}
 
 int main(){
     int num_test_cases, num_prata, num_cooks;
+    std::vector<cook*> heap_ready_pratas;
     
     std::cin >> num_test_cases; // num of test cases
     
     for(int i = 0; i < num_test_cases; i++){
-       std::priority_queue<cook*, std::vector<cook*>, compare> heap_ready_pratas;
+       heap_ready_pratas.clear();
        std::cin >> num_prata;   // num of pratas
        std::cin >> num_cooks;
        for(int j = 0; j < num_cooks; j++){ // rank of cooks
           cook *n = new cook();
           std::cin >> n->wait_time_factor;
           n->next_time = n->wait_time_factor;
-          heap_ready_pratas.push(n);
+          heap_ready_pratas.push_back(n);
        }
        
-       cook *ready_cook;       
+       //Prepare a heap from vector heap_ready_pratas
+       make_heap (heap_ready_pratas.begin(), heap_ready_pratas.end(), compare_heap);
+       
+       cook *ready_cook;
        while(1){
            /*
             * parata is ready, delete that node from heap
             *  decrease the total num_prata by 1
             *   insert a new node in heap with new next_time
             */
-           ready_cook = heap_ready_pratas.top();
+           ready_cook = heap_ready_pratas.front();
            ready_cook->num_prata++;           
            num_prata --;           
            if(num_prata == 0) break;
-           heap_ready_pratas.pop();           
+           
+           pop_heap (heap_ready_pratas.begin(),heap_ready_pratas.end(), compare_heap); 
+           heap_ready_pratas.pop_back();
+           
            ready_cook->next_time+=(ready_cook->num_prata+1)*ready_cook->wait_time_factor;
-           heap_ready_pratas.push(ready_cook);           
+           heap_ready_pratas.push_back(ready_cook);
+           push_heap (heap_ready_pratas.begin(),heap_ready_pratas.end(), compare_heap);
        }
        std::cout << ready_cook->next_time << std::endl;
-//       std::cout << "cook identity " << ready_cook->num_prata << " " << ready_cook->wait_time_factor << std::endl;
     }
 }
 
