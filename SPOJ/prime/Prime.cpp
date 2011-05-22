@@ -17,6 +17,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <cmath>
 #include <string>
 #include <iomanip>
+#include <cstdlib>
 
 /*STL *algorithm* */
 #include <queue>
@@ -29,39 +30,74 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #define DEBUG 1
 #define MAX_SIZE 1000000000
 
-void PreProcessing(int n, int m){
-   std::map<int, char> ARR;
-   int i = n, limit = sqrt(m)+2;
+/* @PreProcessing
+ * Store all the prime numbers upto limit ie. sqrt(MAX_SIZE)
+ * sqrt(MAX_SIZE) because these are also the divisor
+ *    which will be used to check if a number is prime or not
+ */
+int store_divisors(int *a, int limit){
+    int _size = 0, k;
+    a[_size++] = 2;
+    for(int j = 3; j < limit; j+=2){
+      for(k = 0; k < _size; k++){
+         if(j%a[k] == 0) break;
+         if(a[k] > sqrt(j)) {k = _size; break;}
+      }
+      if(k == _size){ a[_size++] = j; }
+    }
+    return _size;   
+}
 
-   ARR[2] = '1';
-   do{ if(i%2 != 0) ARR[i++] = '1'; } while(i <= m);
-   for(int j = 3; j < limit; j+=2){ ARR[j] = '1'; }
+int gen_primes(int n, int m, int *a, int *primes_arr, int count_d){
+   int limit = int(ceil(sqrt(MAX_SIZE)));
+   int _size = 0;
    
-   for(int j = 3; j < limit; j+=2){
-      for(int k = j*j; k <= m; k+=2*j)
-         if( ARR.find(k) != ARR.end() && k % j == 0) ARR.erase(k);
+   // We already have primes for this in *a
+   // just check the range [n, m]   
+   if(m <= limit){
+     for(int i = 0; i < count_d; i++){
+        if(a[i] >= n && a[i] <= m) primes_arr[_size++] = a[i];
+        if(a[i] > m) break;
+     }
+     return _size;
    }
+   
+   // check for all numbers in range [n,m]
+   // whether they are prime or not
+   int k;
+   for(int j = n; j <= m; j++){
+     for(k = 0; k < count_d; k++){
+        if(j%a[k] == 0) break;
+        if(a[k] > sqrt(j)) { k = count_d; break; }
+     }
+     if(k == count_d){ primes_arr[_size++] = j; }     
+   }
+   return _size;
 }
 
-void test(){
-    std::map<int, char> ARR;
-    ARR[2] = '1'; ARR[3] = '1'; ARR[5] = '1'; ARR[7] = '1';
-    for(int j = 11; j <= MAX_SIZE; j+=2){
-        if(!(j % 2 == 0 || j % 3 == 0 || j % 5 == 0 || j % 7 == 0))
-          ARR[j] = '1';
-    }     
-}
 
-// **************************************************
 int main(){
     int num_test_cases, initial_num, final_num;
-    std::cin >> num_test_cases; // num of test cases
+    int *ARR, *primes_arr;
     
+    int limit = int(ceil(sqrt(MAX_SIZE)));
+    ARR       = (int*)malloc(limit*sizeof(int));
+    int count_d = store_divisors(ARR, limit);
+//    std::cout << count_d << "limit: " << limit << std::endl;
+    
+    std::cin >> num_test_cases; // num of test cases   
     for(int i = 0; i < num_test_cases; i++){
        std::cin >> initial_num >> final_num;
-   //    PreProcessing(initial_num, final_num);
-       test();
-       std::cout << initial_num << final_num << std::endl;       
+//       std::cout << initial_num << final_num << std::endl;    
+   
+       primes_arr  = (int*)malloc((final_num - initial_num + 1)*sizeof(int));
+//       std::cout << "mem allocated -- prime generation " << std::endl;
+       int count_p = gen_primes(initial_num, final_num, ARR, primes_arr, count_d);
+//       std::cout << "prime generated " << std::endl;       
+       for(int j = 0; j < count_p; j++){
+          std::cout << primes_arr[j] << std::endl;
+       }
+       std::cout << std::endl;
     }
-    while(1) { continue; }
+//    while(1) { continue; }
 }
