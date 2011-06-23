@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Monday 16 May 2011 06:36:08 PM IST
+* Last Modified : Thursday 23 June 2011 09:00:37 PM IST
 
 * Created By : Nitin
 
@@ -18,6 +18,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <string>
 #include <iomanip>
 #include <cstdlib>
+#include <cstdio>
 
 /*STL *algorithm* */
 #include <queue>
@@ -50,36 +51,39 @@ void print_a(int *a, int n){
 int main(){
     int limit = int(ceil(sqrt(M)));
     int* ARR = (int*)malloc(limit*sizeof(int));
+    int count_d = store_divisors(ARR, limit);
     
-    int count_d = store_divisors(ARR, limit);   
     print_a(ARR, count_d);
     
     int total_p=100, m;
-    int _t, k, size=(M-limit)/total_p; //divide in batch-- total 100
+    long long int _t, k, size=(M-limit)/total_p+1, count_p; //divide in batch-- total 100
     bool flag[size];
-    
+    count_p = count_d;
+ 
     for(int j=0; j<total_p; j++){
         m = limit+size;
-        for(int i=0; i<size; i++) { flag[i]=true; }
+        for(long long int x=0; x<size; x++) { flag[x]=true; }
 
-        //if(DEBUG) std::cout << m(1009900) << "  " << limit(10000) << "  " << size(999900) << std::endl;
         for(k = 0; k < count_d; k++){
+            if(ARR[k] > sqrt(m)) { break; }
+
             int i = limit/ARR[k];
-            std::cout << "startIndex=>" << i << std::endl;
+            i = i >= 2 ? i : 2; // check otherwise it will cut off prime
             while(1){
                _t = i*ARR[k];
-               std::cout << _t << std::endl;               
-               if(_t >= m){ break; }
+               //if(DEBUG) std::cout << _t << std::endl;               
+               if(_t > m){ break; }
                else if(_t < limit){ i++; }
-               else if(_t >= limit && _t < m){ flag[_t] = false; i++; }
+               else if(_t >= limit && _t <= m){ flag[_t-limit] = false; i++; }
             }
         }
-        std::cout << j+1 << " batch completed" << std::endl;
+        for(long long int x=0; x<size; x++){
+           if( (limit+x > 1 && limit+x < M) && (flag[x]==true) ){
+             count_p++;
+             if(count_p%100 == 1) { printf("%lld\n",limit+x); }
+           }
+        }
+        limit = m;
     }
-       
-    //if(1){
-        // std::cout << "got a prime" << std::endl;
-      //  if(count_p%100==1){ printf("%d\n",i); }
-    //}
-    while(1){ continue; }
+//    while(1){ continue; }
 }

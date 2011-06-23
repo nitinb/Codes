@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Thursday 23 June 2011 11:04:37 AM IST
+* Last Modified : Thursday 23 June 2011 08:26:16 PM IST
 
 * Created By : Nitin
 
@@ -18,6 +18,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <string>
 #include <iomanip>
 #include <cstdlib>
+#include <cstdio>
 
 /*STL *algorithm* */
 #include <queue>
