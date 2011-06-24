@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Thursday 23 June 2011 07:38:04 PM IST
+* Last Modified : Friday 24 June 2011 03:25:03 PM IST
 
 * Created By : Nitin
 
@@ -66,11 +66,12 @@ int do_the_deed(long long int num, int *a, int count_d){
         }
     }
     if(curr_max>max){ max = curr_max; }
+    if(max == 0) max=1;
     return max;
 }
 
 int main(){
-    freopen("inp.txt","r",stdin);
+//    freopen("inp.txt","r",stdin);
 
     int limit = int(ceil(sqrt(MAX_SIZE)));
     if(DEBUG) std::cout << "limit=>" << limit << std::endl;
