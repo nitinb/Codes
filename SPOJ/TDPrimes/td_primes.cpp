@@ -57,12 +57,11 @@ int main(){
     
     int total_p=100, m;
     long long int _t, k, size=(M-limit)/total_p+1, count_p; //divide in batch-- total 100
-    bool flag[size];
     count_p = count_d;
+    std::vector<bool> flag(size); 
  
     for(int j=0; j<total_p; j++){
         m = limit+size;
-        for(long long int x=0; x<size; x++) { flag[x]=true; }
 
         for(k = 0; k < count_d; k++){
             if(ARR[k] > sqrt(m)) { break; }
@@ -74,16 +73,17 @@ int main(){
                //if(DEBUG) std::cout << _t << std::endl;               
                if(_t > m){ break; }
                else if(_t < limit){ i++; }
-               else if(_t >= limit && _t <= m){ flag[_t-limit] = false; i++; }
+               else if(_t >= limit && _t <= m){ flag[_t-limit] = true; i++; }
             }
         }
         for(long long int x=0; x<size; x++){
-           if( (limit+x > 1 && limit+x < M) && (flag[x]==true) ){
+           if(flag[x] == true){ flag[x] = false; }
+           else if( limit+x > 1 && limit+x < M){
              count_p++;
              if(count_p%100 == 1) { printf("%lld\n",limit+x); }
            }
         }
         limit = m;
     }
-//    while(1){ continue; }
+  //  while(1){ continue; }
 }
