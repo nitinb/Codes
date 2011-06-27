@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Friday 24 June 2011 08:39:13 PM IST
+* Last Modified : Monday 27 June 2011 03:29:42 PM IST
 
 * Created By : Nitin
 
@@ -32,13 +32,15 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #define MAX_SIZE 10000000
 
 int do_the_deed(long long int num){
-    long long unsigned int max = 1;
-    int final = int(ceil(sqrt(num))), i=2;
+    unsigned long long int max = 1;
+    int final = (int) sqrt(num), i=2;
     while(i<=final){
         if(num%i == 0){
-            int q = num/i; //additional Check
-            if(q<i) break;
-            max += i +q;
+            long long int q = num/i; //additional Check
+            if( q!=i)
+               max += i + q;
+            else
+               max += i ;
         } i++;
     }
     return max;
@@ -49,9 +51,12 @@ int main(){
 
     std::cin >> num_test_cases;
     for(long long int i=0; i<num_test_cases; i++){
-       std::cin >> n;
-       
-       _ret = do_the_deed(n);
-       printf("%lld\n",_ret);
+       scanf("%lld",&n);
+       if( n == 1)  
+         printf("0\n");
+       else{
+         _ret = do_the_deed(n);
+         printf("%lld\n",_ret);
+       }
     }
 }
