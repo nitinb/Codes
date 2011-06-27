@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Monday 27 June 2011 03:37:01 PM IST
+* Last Modified : Monday 27 June 2011 05:02:42 PM IST
 
 * Created By : Nitin
 
@@ -28,9 +28,12 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <map>
 #include <set>
 
+#define DEBUG 1
+typedef long long ll;
+
 int main(){
-//    freopen("inp.txt","r",stdin);
-  
+    freopen("input.txt","r",stdin);
+    ll count=0;
     long long int num, _ret;
     while(1){
        scanf("%lld",&num);

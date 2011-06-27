@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Monday 16 May 2011 06:36:08 PM IST
+* Last Modified : Monday 27 June 2011 04:40:41 PM IST
 
 * Created By : Nitin
 
@@ -50,7 +50,8 @@ int main(){
        
        std::map<std::string, int>::iterator it = count.begin();
        for(; it != count.end(); it++){
-           std::cout << (*it).first << " " << (*it).second << std::endl;
+       //    std::cout << (*it).first << (*it).second << std::endl;
+           printf("%s%d\n", (*it).first.c_str(), (*it).second);
        }
        std::cout << std::endl;
     }
