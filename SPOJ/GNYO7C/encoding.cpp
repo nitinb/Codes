@@ -15,6 +15,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <iostream>
 #include <sstream>
 #include <cmath>
+#include <cstdio>
 #include <string>
 #include <iomanip>
 
@@ -29,39 +30,79 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #define DEBUG 0
 #define MAX_SIZE 10000
 
-// **************************************************
-int main(){
-    int cols;
-    std::string s;
-
-    while(1){
-       scanf("%d",&cols);
-       if(cols == 0){ break; }
-       std::cin >> s;
-       int len = s.length();           
-       int rows= len/cols;
-       
-       char M[rows][cols];
-       int curr_r=-1, curr_c, incr;
-       for(int i = 0;i < len; i++){
-           if(i%cols == 0){
-               curr_r++;
-               if(curr_r%2 == 0){
-                   curr_c=0; incr=1;          
-               }else{
-                   curr_c=cols-1; incr=-1;
-               }
-           }
-           M[curr_r][curr_c]=s[i];
-           curr_c+=incr;
-       }
-
-       for(int i = 0; i < cols; i++){
-           for(int j = 0; j < rows; j++){
-               printf("%c",M[j][i]);
-           }
-       }
-       printf("\n");
+std::string gen_binary(int num){
+    std::string ret;
+    char ch;
+    while(num != 0){
+        ch = num%2 + '0';
+        ret = ret + ch;
+        num /= 2;
     }
-//    while(1) { continue; }
+    return ret;
+}
+
+void convert(char *a, int ROWS, int COLS){
+     int hr, vb, hl, vt;
+     char arr[ROWS][COLS];
+
+    int levl, i=0;
+    for (levl=0; levl < COLS-levl; levl++){
+        for(hr=levl; hr < COLS-levl; hr++)   // go right
+            arr[levl][hr] = a[i++];
+        if(i >= ROWS*COLS) break;
+        
+        for(vb=levl+1; vb < ROWS-levl; vb++) // go down
+            arr[vb][hr-1] = a[i++];
+        if(i >= ROWS*COLS) break;
+        
+        for(hl=hr-1; hl-1 >= levl; hl--)  // go left
+            arr[vb-1][hl-1] = a[i++];
+        if(i >= ROWS*COLS) break;
+        
+        for(vt=vb-1; vt-1 > levl; vt--)  // go up
+            arr[vt-1][hl] = a[i++];
+        if(i >= ROWS*COLS) break;            
+    }
+    
+    for(int x=0; x<ROWS; x++){
+        for(int y=0; y<COLS; y++){
+                printf("%c",arr[x][y]);
+        }
+    }
+}
+
+int main(){
+    int num_test_cases, cols, rows, i, num;
+    char inp[500], tp[500];
+    std::string ret;
+
+    scanf("%d",&num_test_cases); getchar();
+    for(int x=0; x<num_test_cases; x++){
+       inp[0] = '\0';
+       scanf("%[^\n]",tp); getchar();
+       sscanf(tp, "%d %d %[^\n]",&rows, &cols, inp);
+       
+       char M[rows*cols];
+       i=0;
+       while(inp[i] != '\0'){
+          num = inp[i] == ' ' ? 0 : inp[i] - 'A' + 1;
+          if(num > 0){
+             ret = gen_binary(num);
+          }else ret = "";
+          
+          for(int j=0; j<5; j++){
+              if(j<5-ret.length()){ M[5*i+j] = '0'; }
+              else{ M[5*i+j] = ret[4-j];}
+          }
+          i++;
+       }
+       for(int z=0; z<rows*cols; z++){
+           if(M[z] != '0' && M[z] != '1'){
+               M[z] = '0';
+           }
+       }
+       printf("%d ",x+1);
+       convert(M, rows, cols);
+       std::cout << std::endl;       
+    }
 }
