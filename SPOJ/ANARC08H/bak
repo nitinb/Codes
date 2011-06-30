@@ -1,0 +1,63 @@
+/* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+
+* File Name : music.cpp
+
+* Purpose :
+
+* Creation Date : 12-05-2011
+
+* Last Modified : Thursday 30 June 2011 03:03:06 PM IST
+
+* Created By : Nitin
+
+_._._._._._._._._._._._._._._._._._._._._.*/
+
+#include <iostream>
+#include <sstream>
+#include <cmath>
+#include <cstdio>
+#include <string>
+#include <iomanip>
+
+/*STL *algorithm* */
+#include <queue>
+#include <stack>
+#include <list>
+#include <vector>
+#include <map>
+#include <set>
+
+#define DEBUG 0
+#define MAX_SIZE 1000000
+
+int main(){
+    int N, D;
+    while(1){
+       scanf("%d %d",&N, &D);
+       if(N == 0 && D == 0) break;
+
+       std::vector<bool> storage(N);
+       int i = 0, size = N, y;
+
+       while(size != 1){
+          y = D;
+          printf("start at %d\n",i);
+          while( y != 1){
+             if(storage[i] == false) { y--; }
+             i = (i+1)%N;
+          }
+          storage[i] = true;
+          printf("set%d\n",i);
+          while(storage[i] != false){
+             i = (i+1)%N;
+          }
+          size--;
+       }
+       for(int x=0; x<N; x++){
+          if(storage[x] == false)
+             printf("%d\n",x+1);
+          else
+             printf("NW=>%d\n",x+1);
+       }
+    }
+}

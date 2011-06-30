@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Monday 16 May 2011 06:36:08 PM IST
+* Last Modified : Wednesday 29 June 2011 07:39:44 PM IST
 
 * Created By : Nitin
 
@@ -103,6 +103,6 @@ int main(){
        }
        printf("%d ",x+1);
        convert(M, rows, cols);
-       std::cout << std::endl;       
+       printf("\n");
     }
 }
