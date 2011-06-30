@@ -54,9 +54,8 @@ int main(){
                 flag = false;
              }
              A = A >> 1;
-             if(DEBUG) printf("%d\n",bit_c);
           }
-          printf("%g %d\n",pow(2,bit_c),bit_c+1-bit_l);
+          printf("%.0f %d\n",pow(2,bit_c),bit_c+1-bit_l);
        }
     }
 }
