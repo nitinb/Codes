@@ -9,3 +9,8 @@ BinaryHeap
 
 MergeSort: http://geeksforgeeks.org/?p=7740
 copy LL with next and arbit ptr
+
+//18446744073709551616 // 2^64
+//9223372036854775808  // 2^63
+//4294967296           // 2^32
+
