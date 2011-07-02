@@ -32,7 +32,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 typedef long long ll;
 typedef unsigned long long ull;
 
-ull M = 4611686018427387904; // 2^63-1
+//ull M = 4611686018427387904; // 2^63-1
 //18446744073709551616 // 2^64
 //9223372036854775808  // 2^63
 //4294967296           // 2^32
@@ -55,8 +55,10 @@ int store_divisors(int *a, int limit){
 int main(){
     int num_test_cases;
     ull num, mult, i;
-    bool flag[limit];
+    printf("allocate mem\n");    
+    bool flag[limit], temp;
 
+    printf("mem allocated\n");
     for(i = 2; i < limit; i++){
         mult = 2;
         while(mult*i < limit){
@@ -64,8 +66,7 @@ int main(){
            mult++;
         }
     }
-    printf("am done with processing\n");    
-//    return 1;
+    printf("am done with processing\n");
         
     scanf("%d",&num_test_cases); // num of test cases
     for(int z = 0; z < num_test_cases; z++){
@@ -81,6 +82,6 @@ int main(){
            }
            i++;
         }
-        if(temp) printf("NO\n");
+        if(temp) printf("YES\n");
     }
 }

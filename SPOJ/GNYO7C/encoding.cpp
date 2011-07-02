@@ -30,15 +30,34 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #define DEBUG 0
 #define MAX_SIZE 10000
 
-std::string gen_binary(int num){
-    std::string ret;
-    char ch;
-    while(num != 0){
-        ch = num%2 + '0';
-        ret = ret + ch;
-        num /= 2;
-    }
-    return ret;
+void gen_binary(std::map<char, std::string> &storage){
+      storage[' ']="00000";
+      storage['A']="00001";
+      storage['B']="00010";
+      storage['C']="00011";
+      storage['D']="00100";
+      storage['E']="00101";
+      storage['F']="00110";
+      storage['G']="00111";
+      storage['H']="01000";
+      storage['I']="01001";
+      storage['J']="01010";
+      storage['K']="01011";
+      storage['L']="01100";
+      storage['M']="01101";
+      storage['N']="01110";
+      storage['O']="01111";
+      storage['P']="10000";
+      storage['Q']="10001";
+      storage['R']="10010";
+      storage['S']="10011";
+      storage['T']="10100";
+      storage['U']="10101";
+      storage['V']="10110";
+      storage['W']="10111";
+      storage['X']="11000";
+      storage['Y']="11001";
+      storage['Z']="11010";
 }
 
 void convert(char *a, int ROWS, int COLS){
@@ -72,27 +91,31 @@ void convert(char *a, int ROWS, int COLS){
 }
 
 int main(){
-    int num_test_cases, cols, rows, i, num;
-    char inp[500], tp[500];
+    int num_test_cases, cols, rows, i, num, k;
+    char inp[500], ch;
     std::string ret;
+    std::map<char, std::string> storage;
+    
+    gen_binary(storage);
 
     scanf("%d",&num_test_cases); getchar();
     for(int x=0; x<num_test_cases; x++){
-       inp[0] = '\0';
-       scanf("%[^\n]",tp); getchar();
-       sscanf(tp, "%d %d %[^\n]",&rows, &cols, inp);
+       inp[0] = '\0'; k = 0;
+       scanf("%d %d",&rows, &cols);
+       getchar();
+       while(ch=getchar()){
+          if(ch == EOF || ch == '\n') break;
+          inp[k++]=ch;
+       }
+       inp[k] = '\0';
+      // printf("%d**%d**%s**\n",rows, cols, inp);
        
        char M[rows*cols];
        i=0;
        while(inp[i] != '\0'){
-          num = inp[i] == ' ' ? 0 : inp[i] - 'A' + 1;
-          if(num > 0){
-             ret = gen_binary(num);
-          }else ret = "";
-          
+          ret = storage[inp[i]];
           for(int j=0; j<5; j++){
-              if(j<5-ret.length()){ M[5*i+j] = '0'; }
-              else{ M[5*i+j] = ret[4-j];}
+              M[5*i+j] = ret[j];
           }
           i++;
        }
