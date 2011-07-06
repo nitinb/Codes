@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Friday 13 May 2011 07:58:00 PM IST
+* Last Modified : Tuesday 05 July 2011 07:55:29 PM IST
 
 * Created By : Nitin
 
@@ -113,7 +113,7 @@ node* inorder_s(int key){
    *   ( if temp is root node of tree then parent is NULL )
    */
   if(temp == NULL ) return NULL;
-  std::cout << "found the node " << temp->data << std::endl;                  
+  std::cout << "found the node " << temp->data << std::endl;
     
   node* inorder_s;
   if(temp->right != NULL){
