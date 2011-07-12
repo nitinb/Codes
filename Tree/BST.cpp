@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Thursday 07 July 2011 01:30:49 PM IST
+* Last Modified : Tuesday 12 July 2011 02:29:12 PM IST
 
 * Created By : Nitin
 
@@ -14,6 +14,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include <iostream>
 #include <cmath>
+#include <cstdio>
 
 /*STL *algorithm* */
 #include <queue>
@@ -23,7 +24,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <map>
 #include <set>
 
-#define DEBUG 1
+#define DEBUG 0
 
 struct node{
   public:
@@ -267,6 +268,45 @@ void level_order(node* temp){
     }
 }
 
+void spiral_level_order(node* temp){
+    if(temp == NULL) return;  
+    
+    std::queue<node *> Q;
+    std::stack<int> T_S;
+ 
+    int level = 1, count_sep = 0;
+    Q.push(temp);
+    node * sep = NULL;
+    Q.push(sep);
+
+    while( !Q.empty() ){
+       temp = Q.front();
+       Q.pop();
+       if(temp == sep) {
+           level++;
+           if(level % 2 == 1){
+               while( !T_S.empty() ){
+                  std::cout << T_S.top() << " ";
+                  T_S.pop();
+               }
+           }
+           if(count_sep == 0) { break; }
+           count_sep = 0;
+           std::cout << std::endl;
+           Q.push(sep);
+       }
+       else{
+           if(level % 2 == 1){
+              std::cout << temp->data << " ";
+           }else{
+              T_S.push(temp->data);     
+           }
+           if(temp->left != NULL) { Q.push(temp->left); count_sep++; }
+           if(temp->right != NULL){ Q.push(temp->right); count_sep++; }
+       }
+    }
+}
+
 int main(){
   int value;
   std::cout << "input value to insert (( untill -1 )) " << std::endl;
@@ -289,6 +329,10 @@ int main(){
   level_order(root);
   std::cout << std::endl;
 
+  std::cout << "spiral level order " << std::endl;
+  spiral_level_order(root);
+  std::cout << std::endl;
+
   delete_n(11);
   rec_inorder(root);
   std::cout << std::endl;
@@ -308,5 +352,4 @@ int main(){
   delete_n(40);
   rec_inorder(root);
   std::cout << std::endl;
-  while(1){continue;}
 }

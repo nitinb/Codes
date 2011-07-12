@@ -1,12 +1,12 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : foldable.cpp
+* File Name : getDiameter.cpp
 
 * Purpose :
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Tuesday 12 July 2011 02:10:46 PM IST
+* Last Modified : Tuesday 12 July 2011 05:50:14 PM IST
 
 * Created By : Nitin
 
@@ -14,8 +14,6 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include <iostream>
 #include <cmath>
-#include <cstdlib>
-#include <cstdio>
 
 /*STL *algorithm* */
 #include <queue>
@@ -26,6 +24,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <set>
 
 #define DEBUG 1
+#define max(a,b) a>b?a:b
 
 struct node{
   public:
@@ -33,7 +32,6 @@ struct node{
    struct node *left ;
    struct node *right;
      node(){
-        data = -1;
         left = right = NULL;
      }
 };
@@ -43,13 +41,6 @@ struct node{
  */
 node * root = NULL;
 
-
-/*
- * @desc: 
- *   insert function for BST **
- * @param: 
- *   value to be inserted
- */
 void insert ( int value ){
   if (root == NULL) {
     root = new node();
@@ -73,17 +64,33 @@ void insert ( int value ){
   return;
 }
 
-bool is_mirror(node *temp1, node *temp2){
-   if(!(temp1 || temp2)) return true; // both are null
-   else if(!(temp1 && temp2)) return false; // one of them is null
-   else{ 
-     return (is_mirror(temp1->left,temp2->right)&&is_mirror(temp1->right,temp2->left) );
-   }
+/*
+ * @desc: 
+ *   recursive inorder traversal of tree 
+ * @param: 
+ *   root node of the tree/sub-tree 
+ */
+void rec_inorder( node * root){
+   if(root == NULL) return;
+  
+   rec_inorder(root->left);
+   std::cout << root->data << "  ";
+   rec_inorder(root->right);
+   return;
 }
 
-bool wrapper(){
-   if(root == NULL) return true;
-   return is_mirror(root->left, root->right);
+int getDiameter(node *temp, int *height){
+    if(temp == NULL){
+        *height = 0;
+        return 0;
+    }
+    int lh = 0, rh = 0, ld = 0, rd = 0; 
+ 
+    ld = getDiameter(temp->left, &lh);
+    rd = getDiameter(temp->right,&rh);
+
+    *height = max(lh, rh) + 1;
+    return max(max(lh+rh+1, ld), rd);
 }
 
 int main(){
@@ -95,5 +102,11 @@ int main(){
     insert(value);
   }
 
-  std::cout << wrapper() << std::endl;
+  rec_inorder(root);
+  std::cout << std::endl;
+
+  int var;
+  int ret = getDiameter(root, &var);
+  std::cout << ret << std::endl;
+  std::cout << var << std::endl;
 }
