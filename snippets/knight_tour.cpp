@@ -6,7 +6,7 @@
 
 * Creation Date : 12-04-2011
 
-* Last Modified : Thursday 21 July 2011 09:42:58 PM IST
+* Last Modified : Thursday 28 July 2011 01:58:00 PM IST
 
 * Created By : Nitin 
 
@@ -39,11 +39,16 @@ void print_chess(bool *chess){
        }
        std::cout << std::endl;
     }
-    getchar();
 }
 
+bool isSafe(int i, int j, bool *chess){
+   if( i >= 0 && i < ROWS && j >= 0 && j < COLS && (*(chess + i*COLS +j) == false) )
+       return true;
+   return false;
+}
+
+
 bool gen_tour(int i, int j, bool *chess, int count){
-   std::cout << i << "*" << j << "*" << count << std::endl;
 //   print_chess(chess);
 
    if(count == ROWS*COLS){
@@ -51,69 +56,30 @@ bool gen_tour(int i, int j, bool *chess, int count){
       return true;
    }
    bool flag;
+   int a[ROWS] = {2, 1, -1, -2, -2, -1,   1,  2};
+   int b[ROWS] = {1, 2,  2,  1,  -1, -2,  -2, -1};
 
-   if( i+2 < ROWS && j+1 < COLS && (*(chess + (i+2)*COLS + j+1)==false) ){
-      *(chess + (i+2)*COLS + j+1) = true;
-      flag = gen_tour(i+2, j+1, chess, count+1);
-      if(!flag) *(chess + (i+2)*COLS + j+1) = false;
-      else return flag;
-   }
-   if( i+2 < ROWS && j-1 > -1 && (*(chess + (i+2)*COLS + j-1)==false) ){
-      *(chess + (i+2)*COLS + j-1) = true;
-      flag = gen_tour(i+2, j-1, chess, count+1);
-      if(!flag) *(chess + (i+2)*COLS + j-1) = false;
-      else return flag;
-   }
-   if( i-2 > -1 && j-1 > -1 && (*(chess + (i-2)*COLS + j-1)==false) ){
-      *(chess + (i-2)*COLS + j-1) = true;
-      flag = gen_tour(i-2, j-1, chess, count+1);
-      if(!flag) *(chess + (i-2)*COLS + j-1) = false;
-      else return flag;
-   }
-   if( i-2 > -1 && j+1 < COLS && (*(chess + (i-2)*COLS + j+1)==false) ){
-      *(chess + (i-2)*COLS + j+1) = true;
-      flag = gen_tour(i-2, j+1, chess, count+1);
-      if(!flag) *(chess + (i-2)*COLS + j+1) = false;
-      else return flag;
-   }
-   if( i+1 < ROWS && j+2 < COLS && (*(chess + (i+1)*COLS + j+2)==false) ){
-      *(chess + (i+1)*COLS + j+2) = true;
-      flag = gen_tour(i+1, j+2, chess, count+1);
-      if(!flag) *(chess + (i+1)*COLS + j+2) = false;
-      else return flag;
-   }
-   if( i+1 < ROWS && j-2 > -1 && (*(chess + (i+1)*COLS + j-2)==false) ){
-      *(chess + (i+1)*COLS + j-2) = true;
-      flag = gen_tour(i+1, j-2, chess, count+1);
-      if(!flag) *(chess + (i+1)*COLS + j-2) = false;
-      else return flag;
-   }
-   if( i-1 > -1 && j-2 > -1 && (*(chess + (i-1)*COLS + j-2)==false) ){
-      *(chess + (i-1)*COLS + j-2) = true;
-      flag = gen_tour(i-1, j-2, chess, count+1);
-      if(!flag) *(chess + (i-1)*COLS + j-2) = false;
-      else return flag;
-   }
-   if( i-1 > -1 && j+2 < COLS && (*(chess + (i-1)*COLS + j+2)==false) ){
-      *(chess + (i-1)*COLS + j+2) = true;
-      flag = gen_tour(i-1, j+2, chess, count+1);
-      if(!flag) *(chess + (i-1)*COLS + j+2) = false;
-      else return flag;
+   FORI(k,0,ROWS){
+      int u = i+a[k];
+      int v = j+b[k];
+      if( isSafe(u, v, chess) ){
+         *(chess + u*COLS + v) = true;
+         flag = gen_tour(u, v, chess, count+1);
+         if(flag == true){ return true; }
+         else{ *(chess + u*COLS + v) = false; }
+      }
    }
    return false;
-/*
- *  if(1){
- *     std::cout << "wtf!! knight gone crazy " << std::endl;
- *     std::cout << i << "*" << j << "*" << count << std::endl;
- *  }
- */
 }
 
 int main(){
    bool chess[ROWS][COLS] = {false};
-   bool ch = gen_tour(0, 4, &chess[0][0], 0);
+
+   chess[0][0]=true;
+   bool ch = gen_tour(0, 0, &chess[0][0], 1);
    if(ch){
      std::cout << "success " << std::endl;
+     print_chess(&chess[0][0]);
    } else{
       std::cout << "FUUU" << std::endl;
    }
