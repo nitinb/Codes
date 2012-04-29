@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Friday 13 May 2011 07:58:00 PM IST
+* Last Modified : Tuesday 05 July 2011 07:51:41 PM IST
 
 * Created By : Nitin
 
@@ -157,13 +157,6 @@ bool same_tree(node *temp1, node *temp2){
 }
 node *root2 = NULL;
 
-bool is_mirror(node *temp){
-   if(temp == NULL) return true;
-   if(!(temp->left || temp->right)) return true; // both are null
-   else if(!(temp->left && temp->right)) return false; // one of them is null
-   else return ( is_mirror(temp->left) && is_mirror(temp->right) );
-}
-
 int count_trees(int num_keys){
     if(num_keys <= 1) return 1;
     else{
@@ -207,9 +200,6 @@ int main(){
   rec_inorder(root);
   std::cout << std::endl;
   
-  bool _flag = is_mirror(root);
-  std::cout << "is mirror: " << _flag << std::endl;
-      
   _count = count_trees(3);
   std::cout << _count << std::endl;
     

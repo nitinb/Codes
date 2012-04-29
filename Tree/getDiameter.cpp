@@ -1,12 +1,12 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : inorder_s.cpp
+* File Name : getDiameter.cpp
 
 * Purpose :
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Tuesday 12 July 2011 02:14:58 PM IST
+* Last Modified : Wednesday 13 July 2011 12:07:59 PM IST
 
 * Created By : Nitin
 
@@ -24,6 +24,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 #include <set>
 
 #define DEBUG 1
+#define max(a,b) a>b?a:b
 
 struct node{
   public:
@@ -31,7 +32,6 @@ struct node{
    struct node *left ;
    struct node *right;
      node(){
-        data = -1;
         left = right = NULL;
      }
 };
@@ -41,13 +41,6 @@ struct node{
  */
 node * root = NULL;
 
-
-/*
- * @desc: 
- *   insert function for BST **
- * @param: 
- *   value to be inserted
- */
 void insert ( int value ){
   if (root == NULL) {
     root = new node();
@@ -86,46 +79,19 @@ void rec_inorder( node * root){
    return;
 }
 
-/*
- * @desc: 
- *   recursively FIND inorder_s of a key from BStree
- * @param:
- *   key whose inorder_s to find 
-   *
-   * inorder successor of a node =>
-   *   if right child
-   *      leftmost child of right sub-tree
-   *   else
-   *      first left ancestor of node 
- */
-node* inorder_s(int key){
-  node* l_parent = NULL;
-  node* temp = root;
-  
-  while(1){
-    if(temp == NULL || temp->data == key) break;
-    if(temp->data > key) { l_parent = temp; temp = temp->left; }
-    else { temp = temp->right; }
-  }
-  /*
-   * temp: node whose inorder_s we need to find ( can be NULL if key not found in tree )
-   * parent: ptr to parent of temp 
-   *   ( if temp is root node of tree then parent is NULL )
-   */
-  if(temp == NULL ) return NULL;
-  std::cout << "found the node " << temp->data << std::endl;
-    
-  node* inorder_s;
-  if(temp->right != NULL){
-    inorder_s = temp->right;
-    while(inorder_s->left != NULL) { inorder_s = inorder_s->left; }
-  }
-  else{
-    inorder_s = l_parent;
-  }
-  return inorder_s;
-}
+int getDiameter(node *temp, int *height){
+    if(temp == NULL){
+        *height = 0;
+        return 0;
+    }
+    int lh = 0, rh = 0, ld = 0, rd = 0; 
+ 
+    ld = getDiameter(temp->left, &lh);
+    rd = getDiameter(temp->right,&rh);
 
+    *height = max(lh, rh) + 1;
+    return max(max(lh+rh+1, ld), rd);
+}
 
 int main(){
   int value;
@@ -139,11 +105,8 @@ int main(){
   rec_inorder(root);
   std::cout << std::endl;
 
-  node* _ret;
-  while( value != -2){
-    std::cin >> value;
-    _ret = inorder_s(value);
-    if( _ret ) std::cout << "inorder successor : " << _ret->data << std::endl;
-    else std::cout << value << ", no inorder successor " << std::endl;
-  }
+  int var;
+  int ret = getDiameter(root, &var);
+  std::cout << ret << std::endl;
+  std::cout << var << std::endl;
 }

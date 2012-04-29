@@ -6,7 +6,7 @@
 
 * Creation Date : 12-05-2011
 
-* Last Modified : Friday 13 May 2011 07:58:00 PM IST
+* Last Modified : Tuesday 05 July 2011 07:56:29 PM IST
 
 * Created By : Nitin
 
@@ -78,8 +78,8 @@ void insert ( int value ){
             curr = curr->right;
         }
         else{
-            inorder_p = curr;             
-            curr->right = n;           
+            inorder_p = curr;
+            curr->right = n;
             break;
        }
     }
