@@ -1,13 +1,13 @@
 
 @TODO
-http://en.wikipedia.org/wiki/Selection_algorithm
 http://en.wikipedia.org/wiki/Prim%27s_algorithm
-http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
+http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm\
+
+Heap Sort
 
 BinomialHeap
 BinaryHeap
 
-MergeSort: http://geeksforgeeks.org/?p=7740
 copy LL with next and arbit ptr
 
 //18446744073709551616 // 2^64
