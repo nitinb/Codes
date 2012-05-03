@@ -1,17 +1,3 @@
-/* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
-
-* File Name : heap.cpp
-
-* Purpose :
-
-* Creation Date : 12-05-2011
-
-* Last Modified : Friday 13 May 2011 07:58:00 PM IST
-
-* Created By : Nitin
-
-_._._._._._._._._._._._._._._._._._._._._.*/
-
 #include <iostream>
 #include <cmath>
 
@@ -39,26 +25,23 @@ class heap{
 //  void merge();   // @THINK
   void HeapSort();
   int top();
-  int size();  
+  int size();
 };
 
 
 void heap::insert(int value){
    data[curr_size] = value;
    int i = curr_size;
-   while(1){
-       if(data[i] < data[(i-1)/2]){ // parent node smaller than child
-           data[i]       = data[i] + data[(i-1)/2];   // swap the values
-           data[(i-1)/2] = data[i] - data[(i-1)/2];
-           data[i]       = data[i] - data[(i-1)/2];
-           i = (i-1)/2;
-       }
-       else{
-          break;
-       }
-   }
    curr_size++;
-   return;
+
+   int parent_position = (i - 1) / 2;
+   while(i > 0 && (data[i] < data[parent_position])){
+       data[i]       = data[i] + data[parent_position];
+       data[parent_position] = data[i] - data[parent_position];
+       data[i]       = data[i] - data[parent_position];
+       i = parent_position;
+       parent_position = (i - 1) / 2;
+   }
 }
 
 int heap::top(){
@@ -71,22 +54,25 @@ int heap::size(){
 
 void heap::deleteMin(){
    if(curr_size <= 0) return;
-   
-   data[0] = data[curr_size-1];
-   curr_size--;
-   
-   int i = 0;
-   bool flag = false;
-   while(!flag){
-      flag = true;
-      int _pos = data[2*i+1] <= data[2*i+2] ? 2*i+1 : 2*i+2;
-        
-      if(data[i] > data[_pos]){
-           data[i]    = data[i] + data[_pos];   // swap the values
-           data[_pos] = data[i] - data[_pos];
-           data[i]    = data[i] - data[_pos];
-           flag = false;
+
+   this->curr_size--;
+   data[0] = data[this->curr_size];
+
+   int i = 0, child_position;
+   while(2 * i + 1 < this->curr_size){
+       child_position = 2 * i + 1;
+       if(2 * i + 2 < this->curr_size){
+           child_position = data[2 * i + 1] <= data[2 * i + 2] ? 2 * i + 1 : 2 * i + 2;
+       }
+
+      if(data[i] > data[child_position]){
+           data[i]    = data[i] + data[child_position];
+           data[child_position] = data[i] - data[child_position];
+           data[i]    = data[i] - data[child_position];
+           i = child_position;
+           continue;
       }
+      return;
    }
 }
 
@@ -94,7 +80,7 @@ void heap::HeapSort(){
   while(curr_size > 0){
      std::cout << top() << std::endl;
      deleteMin();
-  }  
+  }
 }
 
 int main(){
@@ -102,19 +88,19 @@ int main(){
 
    std::cout << "min element: " << h->top() << std::endl;
    h->insert(10);
-   std::cout << "min element: " << h->top() << std::endl;   
+   std::cout << "min element: " << h->top() << std::endl;
    h->insert(19);
-   std::cout << "min element: " << h->top() << std::endl;   
+   std::cout << "min element: " << h->top() << std::endl;
    h->insert(3);
    std::cout << "min element: " << h->top() << std::endl;
    h->deleteMin();
-   std::cout << "min element after delete: " << h->top() << std::endl;   
+   std::cout << "min element after delete: " << h->top() << std::endl;
    h->insert(11);
    std::cout << "min element: " << h->top() << std::endl;
    h->deleteMin();
-   std::cout << "min element after delete: " << h->top() << std::endl;   
+   std::cout << "min element after delete: " << h->top() << std::endl;
    h->insert(1);
-   std::cout << "min element: " << h->top() << std::endl;   
+   std::cout << "min element here: " << h->top() << std::endl;
    h->deleteMin();
    std::cout << "min element after delete: " << h->top() << std::endl;
    h->deleteMin();
@@ -125,23 +111,14 @@ int main(){
    h->deleteMin();
    std::cout << "min element after delete: " << h->top() << std::endl;
    std::cout << "size: " << h->size() << std::endl;
-   
+
    h->insert(11);
-   h->insert(17);   
+   h->insert(17);
    h->insert(31);
    h->insert(8);
    h->insert(99);
    h->insert(1);
    h->HeapSort();
-                 
+
    while(1){ continue; }
 }
-
-/*
-http://en.wikipedia.org/wiki/Selection_algorithm
-http://en.wikipedia.org/wiki/Prim%27s_algorithm
-http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-
-BinomialHeap
-BinaryHeap
- */
