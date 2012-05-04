@@ -33,7 +33,7 @@ struct node {
     node(){
        data = -1;
        next = NULL;
-    } 
+    }
 };
 
 class linkedlist{
@@ -44,16 +44,16 @@ class linkedlist{
   }
   void Insert(int);
   void Print();
-  void reverse();
-  void rec_reverse(node*, node*);
-  void rec_reverse(node*);  
+  node* reverse();
+  node* rec_reverse(node*, node*);
+  node* rec_reverse(node*);
 };
 
 void linkedlist::Insert(int value){
     node *nn = new node();
     nn->data = value;
     node *temp;
-    
+
     if(!root) { root = nn; }
     else{
        temp = root;
@@ -67,62 +67,63 @@ void linkedlist::Print(){
    node *temp = root;
    while(temp){
      std::cout << "Data : " << temp->data << std::endl;
-     temp = temp->next; 
+     temp = temp->next;
    }
    std::cout << std::endl;
 }
 
 
-void linkedlist::reverse(){
+node* linkedlist::reverse(){
    node *current = root, *prev = NULL, *temp;
-   if(!(current && current->next)) return; // 0 or 1 length linked list
-   
-   prev = current; current = current->next; prev->next = NULL;
+   if(current == NULL || current->next == NULL){
+       return current;
+   }
+
    while(current){
       temp    = current->next;
       current->next = prev;
       prev    = current;
       current = temp;
    }
-   root = prev;
+   return prev;
 }
 
-void linkedlist::rec_reverse(node *prev, node *curr){
-   if(curr == NULL){ root = prev; return; }
+node* linkedlist::rec_reverse(node *prev, node *curr){
+   if(curr == NULL){
+       return prev;
+   }
    node *temp = curr->next;
    curr->next = prev;
-   rec_reverse(curr,temp);
+   return rec_reverse(curr, temp);
 }
 
-void linkedlist::rec_reverse(node *curr){
-    node *first, *rest;
-    if(curr == NULL) return; 
-    
-    first = curr;
-    rest  = curr->next;
-    if(rest == NULL) { root = first; return; }
-    
-    rec_reverse(rest);
-    first->next->next = first;
-    first->next = NULL;
+node* linkedlist::rec_reverse(node *curr){
+    if(curr == NULL || curr->next == NULL){
+        return curr;
+    }
+
+    node* new_root = rec_reverse(curr->next);
+    curr->next->next = curr;
+    curr->next = NULL;
+    return new_root;
 }
 
 int main(){
    linkedlist *ll = new linkedlist();
-    
+
    int num;
    std::cin >> num;
    while(num!=-1){
       ll->Insert(num);
-      std::cin >> num;      
+      std::cin >> num;
    }
    ll->Print();
-   ll->reverse();
+   ll->root = ll->reverse();
    ll->Print();
-   ll->rec_reverse(NULL, ll->root);
+   ll->root = ll->rec_reverse(NULL, ll->root);
    ll->Print();
-   ll->rec_reverse(ll->root);
+   ll->root = ll->rec_reverse(ll->root);
    ll->Print();
-            
+
    while(1){ continue; }
 }
