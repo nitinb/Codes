@@ -14,6 +14,7 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #include <iostream>
 #include <cmath>
+#include <cstdlib>
 
 /*STL *algorithm* */
 #include <queue>
@@ -33,7 +34,7 @@ struct node {
     node(){
        data = -1;
        next = NULL;
-    } 
+    }
 };
 
 class linkedlist{
@@ -51,7 +52,7 @@ void linkedlist::Insert(int value){
     node *nn = new node();
     nn->data = value;
     node *temp;
-    
+
     if(!root) { root = nn; }
     else{
        temp = root;
@@ -65,24 +66,24 @@ void linkedlist::Print(){
    node *temp = root;
    while(temp){
      std::cout << "Data : " << temp->data << std::endl;
-     temp = temp->next; 
+     temp = temp->next;
    }
 }
 
 
-void linkedlist::delete_ll(node *temp){   
+void linkedlist::delete_ll(node *temp){
     node *_t;
     while(temp != NULL){
        _t   = temp;
        temp = temp->next;
-       free(_t);
+       delete _t;
     }
     root = NULL;
 }
 
 int main(){
-   linkedlist *ll = new linkedlist(); 
-    
+   linkedlist *ll = new linkedlist();
+
    int num;
    std::cin >> num;
    while(num!=-1){
