@@ -56,7 +56,6 @@ void rec_inorder( node * root){
    return;
 }
 
-
 int sum_tree(node *temp){
      if(!temp) return 0;
      

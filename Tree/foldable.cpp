@@ -74,15 +74,22 @@ void insert ( int value ){
 }
 
 bool is_mirror(node *temp1, node *temp2){
-   if(!(temp1 || temp2)) return true; // both are null
-   else if(!(temp1 && temp2)) return false; // one of them is null
-   else{ 
-     return (is_mirror(temp1->left,temp2->right)&&is_mirror(temp1->right,temp2->left) );
+   if(temp1 == NULL && temp2 == NULL){
+       return true;
    }
+
+   if(temp1 == NULL || temp2 == NULL){
+       return false;
+   }
+
+   return (is_mirror(temp1->left, temp2->right) && is_mirror(temp1->right, temp2->left));
 }
 
 bool wrapper(){
-   if(root == NULL) return true;
+   if(root == NULL){
+       return true;
+   }
+
    return is_mirror(root->left, root->right);
 }
 

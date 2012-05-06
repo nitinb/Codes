@@ -87,13 +87,13 @@ node * search(int key){
   }
 }
 
-/*
+/**
  * @desc: 
  *   DELETE a key From BStree
  * @param:
  *   key to delete from tree
  */
-void delete_n (int key){
+void delete_n(int key){
   node *temp = root, *parent = NULL;
   bool flag  = false;
 
@@ -111,35 +111,37 @@ void delete_n (int key){
    */
   if(temp == NULL ) return;
 
-  // leaf node ( both child ptrs are NULL )
-  if(temp->right == NULL && temp->left == NULL){
-    if(parent == NULL) root = NULL;
-    else if(flag) parent->left = NULL;
-    else parent->right = NULL;
-    delete(temp);
-    return;
+  if(temp->right == NULL){
+      if(parent == NULL){
+          root = temp->left;
+      }
+      else if(flag == true){
+          parent->left = temp->left;
+      }
+      else{
+          parent->right = temp->left;
+      }
+
+      delete temp;
+      return;
   }
 
-  // case: only one child
-  if(temp->left == NULL || temp->right == NULL){
-    node *move = temp->left == NULL ? temp->right : temp->left;
-    
-    if(parent == NULL) root    = move;
-    else if(flag) parent->left = move;
-    else parent->right = move;
-    delete(temp);
-    return;
+  node *inorder_s = temp->right;
+  parent = temp;
+  while(inorder_s->left != NULL){
+      parent = inorder_s;
+      inorder_s = inorder_s->left;
   }
-
-  // case: both child ptrs are non-null
-  // find inorder successor of the temp node.. 
-  // ..copy its value to temp node
-  // ..delete the inorder successor node
-  node *inorder_s = temp->right; parent = temp;
-  while(inorder_s->left != NULL) { parent = inorder_s; inorder_s = inorder_s->left; }
-  temp->data   = inorder_s->data;
-  parent != temp ? parent->left = inorder_s->right : parent->right = inorder_s->right;
-  delete(inorder_s);
+  temp->data = inorder_s->data;
+  
+  //Delete inorder_s node
+  if(parent == temp){
+      parent->right = inorder_s->right; 
+  }
+  else{
+      parent->left = inorder_s->right;
+  }
+  delete inorder_s;
   return;
 }
 
@@ -245,6 +247,9 @@ void iterative_postorder(node *root){
    while( !S.empty() || root != NULL){
       if(root != NULL){
          S.push(root);
+         if(root->right != NULL){
+             S.push(root->right);
+         }
          root = root->left;
       }
       else{
@@ -256,54 +261,87 @@ void iterative_postorder(node *root){
 }
 
 void level_order(node* temp){
+    std::cout << "Level order " << std::endl;
+    if(temp == NULL) return;  
+
     std::queue<node *> Q;
-    
-    if(temp != NULL) Q.push(temp);
-    while( !Q.empty() ){
-       temp = Q.front();
-       Q.pop();
-       std::cout << temp->data << " ";
-       if(temp->left != NULL) Q.push(temp->left);
-       if(temp->right != NULL) Q.push(temp->right);
+    node *sep = NULL;
+    int count_non_sep = 0;
+
+    Q.push(temp);
+    Q.push(sep);
+    while(!Q.empty()){
+        temp = Q.front();
+        Q.pop();
+
+        if(temp == sep){
+            std::cout << std::endl;
+            Q.push(sep);
+            if(count_non_sep == 0){
+               break;
+            }
+            count_non_sep = 0;
+        }
+        else{
+            std::cout << temp->data << " ";
+
+            if(temp->left != NULL){
+                Q.push(temp->left);
+                count_non_sep++;
+            }
+            if(temp->right != NULL){
+                Q.push(temp->right);
+                count_non_sep++;
+            }
+        }
     }
 }
 
 void spiral_level_order(node* temp){
+    std::cout << "Spiral level order " << std::endl;
     if(temp == NULL) return;  
     
     std::queue<node *> Q;
     std::stack<int> T_S;
  
-    int level = 1, count_sep = 0;
+    int level = 1, count_non_sep = 0;
     Q.push(temp);
-    node * sep = NULL;
+    node *sep = NULL;
     Q.push(sep);
 
-    while( !Q.empty() ){
-       temp = Q.front();
-       Q.pop();
-       if(temp == sep) {
-           level++;
-           if(level % 2 == 1){
-               while( !T_S.empty() ){
-                  std::cout << T_S.top() << " ";
-                  T_S.pop();
-               }
-           }
-           if(count_sep == 0) { break; }
-           count_sep = 0;
-           std::cout << std::endl;
-           Q.push(sep);
-       }
-       else{
-           if(level % 2 == 1){
-              std::cout << temp->data << " ";
-           }else{
-              T_S.push(temp->data);     
-           }
-           if(temp->left != NULL) { Q.push(temp->left); count_sep++; }
-           if(temp->right != NULL){ Q.push(temp->right); count_sep++; }
-       }
+    while(!Q.empty()){
+        temp = Q.front();
+        Q.pop();
+        if(temp == sep){
+            level++;
+            if(level % 2 == 1){
+                while(!T_S.empty()){
+                    std::cout << T_S.top() << " ";
+                    T_S.pop();
+                }
+            }
+            if(count_non_sep == 0) { break; }
+            count_non_sep = 0;
+            std::cout << std::endl;
+            Q.push(sep);
+        }
+        else{
+            if(level % 2 == 1){
+                std::cout << temp->data << " ";
+            }
+            else{
+                T_S.push(temp->data);     
+            }
+
+            if(temp->left != NULL){
+                Q.push(temp->left);
+                count_non_sep++;
+            }
+            if(temp->right != NULL){
+                Q.push(temp->right);
+                count_non_sep++;
+            }
+        }
     }
 }
 
@@ -329,7 +367,6 @@ int main(){
   level_order(root);
   std::cout << std::endl;
 
-  std::cout << "spiral level order " << std::endl;
   spiral_level_order(root);
   std::cout << std::endl;
 

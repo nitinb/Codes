@@ -3,10 +3,9 @@
 http://en.wikipedia.org/wiki/Prim%27s_algorithm
 http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm\
 
-Heap Sort
-
 BinomialHeap
 BinaryHeap
+Iterative postorder traversal
 
 copy LL with next and arbit ptr
 

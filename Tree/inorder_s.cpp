@@ -112,13 +112,16 @@ node* inorder_s(int key){
    * parent: ptr to parent of temp 
    *   ( if temp is root node of tree then parent is NULL )
    */
-  if(temp == NULL ) return NULL;
+  if(temp == NULL ){
+      return NULL;
+  }
   std::cout << "found the node " << temp->data << std::endl;
     
-  node* inorder_s;
+  node* inorder_s = temp->right;
   if(temp->right != NULL){
-    inorder_s = temp->right;
-    while(inorder_s->left != NULL) { inorder_s = inorder_s->left; }
+    while(inorder_s->left != NULL){
+        inorder_s = inorder_s->left;
+    }
   }
   else{
     inorder_s = l_parent;
