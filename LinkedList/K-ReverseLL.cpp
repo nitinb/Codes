@@ -73,21 +73,34 @@ void linkedlist::Print(){
 
 void linkedlist::kreverse(int k){
    node *current = root; 
-   if(!(current && current->next) || k <= 1) return;
-   
-   node *prev, *next, *tail, *plink;
-   root = NULL;
+   if(current == NULL || current->next == NULL || k <= 1){
+       return;
+   }
+
+   node *prev, *next, *tail, *linker = NULL;
    while(1){
-      int count = k; tail = current; prev = NULL;
-      while(current && count > 0){
-         next = current->next;
-         current->next = prev;
-         prev = current; current = next; count--;                    
-      }
-      if(root == NULL){ root = prev; }
-      else{ plink->next = prev;}
-      plink = tail;
-      if(current == NULL) break;
+       int count = k;
+       tail = current;
+       prev = NULL;
+       while(current != NULL && count > 0){
+           next = current->next;
+           current->next = prev;
+           prev = current;
+           current = next;
+           count--;
+       }
+
+       if(linker == NULL){
+           root = prev;
+       }
+       else{
+           linker->next = prev;
+       }
+       linker = tail;
+
+       if(current == NULL){
+           break;
+       }
    }
 }
 
@@ -95,14 +108,18 @@ node* linkedlist::rec_kreverse(node *temp, int k){
    int count = k;
    node *prev = NULL, *next, *current = temp;
    
-   while(current && count > 0){
+   while(current != NULL && count > 0){
       next = current->next;
       current->next = prev;
-      prev = current; current = next; count--;                    
+      prev = current;
+      current = next;
+      count--;                    
    }
+
    if(current != NULL){
       temp->next = rec_kreverse(current, k);
    }
+
    return prev;
 }
 

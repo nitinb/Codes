@@ -89,16 +89,20 @@ void linkedlist::delete_right_node(){
    node *temp = root, *prev = NULL;
    
    while(temp && temp->next){
-      if(temp->next->data > temp->data){  // delete temp;
+      if(temp->next->data > temp->data){  
          node *_t = temp;      
-         if(prev == NULL){root = temp->next; }
-         else { prev->next = temp->next; }
-         temp = temp->next;         
-         free(_t);
-      }else{
-          prev = temp;
-          temp = temp->next;
+         if(prev == NULL){
+             root = temp->next;
+         }
+         else{
+             prev->next = temp->next;
+         }
+         delete _t;
       }
+      else{
+          prev = temp;
+      }
+      temp = temp->next;
    }
    return;
 }

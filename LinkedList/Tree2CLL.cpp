@@ -47,27 +47,29 @@ node * root = NULL;
  * @param: 
  *   value to be inserted
  */
-void insert ( int value ){
-  if (root == NULL) {
-    root = new node();
-    root->data = value;
-    return;
-  }
-
-  node * curr = root;
-  node * prev = curr;
-  while(1){
-    prev = curr;
-    curr = curr->data >= value ? curr->left : curr->right;
-    if(curr == NULL){
-       node * n = new node();
-       n->data  = value;
-       if( value < prev->data ) prev->left = n; 
-       else prev->right = n;
-       break;
+void insert(int value){
+    if (root == NULL) {
+      root = new node();
+      root->data = value;
+      return;
     }
-  }
-  return;
+
+    node *curr = root, *prev;
+    while(1){
+        prev = curr;
+        curr = curr->data >= value ? curr->left : curr->right;
+        if(curr == NULL){
+            node *n = new node();
+            n->data  = value;
+            if(value < prev->data){
+                prev->left = n;
+            }
+            else{
+                prev->right = n;
+            }
+            break;
+        }
+    }
 }
 
 /*
@@ -77,12 +79,13 @@ void insert ( int value ){
  *   root node of the tree/sub-tree 
  */
 void rec_inorder( node * root){
-   if(root == NULL) return;
+   if(root == NULL){
+       return;
+   }
   
    rec_inorder(root->left);
    std::cout << root->data << "  ";
    rec_inorder(root->right);
-   return;
 }
 
 /*
@@ -105,7 +108,10 @@ node* T2CLL(node *temp){
        temp->left  = a->left;
        temp->right = a;
        a->left  = temp;
-   }else{ a = temp; }
+   }
+   else{
+       a = temp;
+   }
 
    // a & b are headPtrs of 2 circular linked list
    // append 'b' to the end of CLL a
@@ -122,25 +128,29 @@ node* T2CLL(node *temp){
 }
 
 void Print(){
-   if(!root) return;
+   if(root == NULL){
+       return;
+   }
    
    node *current = root;
+   std::cout << "LL=> ";
    do{
-     std::cout << "Print : " << current->data << std::endl;
-     current = current->right; 
+       std::cout << current->data << "  ";
+       current = current->right; 
    }while(current != root);
    std::cout << std::endl;
    
+   std::cout << "Circular-LL=> ";
    do{
-     std::cout << "Rev-Print : " << current->data << std::endl;
-     current = current->left; 
+       std::cout << current->data << "  ";
+       current = current->left; 
    }while(current != root);
    std::cout << std::endl;
 }
 
 int main(){
   int value;
-  std::cout << "input value to insert (( untill -1 )) " << std::endl;
+  std::cout << "input value to insert in tree (( untill -1 )) " << std::endl;
   while(1){
     std::cin >> value;
     if(value == -1) break;

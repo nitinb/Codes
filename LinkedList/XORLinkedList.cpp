@@ -42,53 +42,73 @@ class linkedlist{
   linkedlist(){
     root = NULL;
   }
+  node* get_next(node*, node*);
   void Insert(int);
   void Print();
   void print_reverse();
 };
 
-/*
+node* linkedlist::get_next(node* current, node* prev){
+    return (node*)((int)current->npx ^ (int)prev);
+}
+
+/**
  * XOR LINKED LIST
  *  nextPtr(npx) will have XoR of prev and next
  */
 void linkedlist::Insert(int value){
     node *nn = new node();
     nn->data = value;
-    node *temp, *prev, *_t;
-    
-    if(!root){ root = nn; }
-    else{
-       temp = root; prev = NULL;
-       while( (node*)( (int)temp->npx^(int)prev ) ){
-           _t = temp; temp = (node*)( (int)prev^(int)temp->npx ); prev = _t; 
-       }
-       temp->npx = (node*)((int)prev^(int)nn);
-       nn->npx   = temp;
+
+    if(root == NULL){
+        root = nn;
+        return;
     }
+
+    node *iter = root, *prev = NULL, *temp;
+    while(get_next(iter, prev) != NULL){
+        temp = iter;
+        iter = get_next(iter, prev); 
+        prev = temp; 
+    }
+
+    iter->npx = (node*)((int)prev ^ (int)nn);
+    nn->npx   = iter;
     return;
 }
 
 void linkedlist::Print(){
-   node *temp = root, *prev = NULL, *_t;
+   node *iter = root, *prev = NULL, *temp;
    
-   while(temp){
-     std::cout << "Data : " << temp->data << std::endl;
-     _t = temp; temp = (node*)( (int)prev^(int)temp->npx ); prev = _t;
+   std::cout << "LL=> ";
+   while(iter != NULL){
+     std::cout << iter->data << "  ";
+     temp = iter;
+     iter = get_next(iter, prev); 
+     prev = temp;
    }
+   std::cout << std::endl;
 }
 
 void linkedlist::print_reverse(){
-   node *temp = root, *prev = NULL, *_t;
+   node *iter = root, *prev = NULL, *temp;
 
-   while(temp){
-     _t = temp; temp = (node*)( (int)prev^(int)temp->npx ); prev = _t;
+   while(iter != NULL){
+     temp = iter;
+     iter = get_next(iter, prev); 
+     prev = temp;
    }
+
    // prev will have the last ptr
-   //  && temp will be NULL [;)]
-   while(prev){
-     std::cout << "Rev-Data : " << prev->data << std::endl;
-     _t = prev; prev = (node*)( (int)temp^(int)prev->npx ); temp = _t;     
+   //  && iter will be NULL [;)]
+   std::cout << "Reversed LL=> ";
+   while(prev != NULL){
+     std::cout << prev->data << "  ";
+     temp = prev;
+     prev = get_next(prev, iter); 
+     iter = temp;
    }
+   std::cout << std::endl;
 }
 
 int main(){
@@ -101,8 +121,6 @@ int main(){
       std::cin >> num;      
    }
    ll->Print();
-   std::cout << "printing done " << std::endl;   
    ll->print_reverse();
-   std::cout << "rev printing done " << std::endl;   
    while(1){ continue; }
 }

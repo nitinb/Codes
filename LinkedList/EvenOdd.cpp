@@ -70,21 +70,30 @@ void linkedlist::Print(){
 }
 
 node* linkedlist::SeparateEvenOdd(){
-   node *nes, *nee, *nos, *noe; // nodeeven(start/end);; nodeodd(start/end);;
-   nes = NULL; nee = NULL; nos = NULL; noe = NULL;
-   
+   node *nes = NULL, *nee = NULL, *nos = NULL, *noe = NULL; // nodeeven(start/end);; nodeodd(start/end);;
    node *temp = root;
+
    while(temp != NULL){
-      if(temp->data%2){
-         if(nos == NULL){ nos = temp; noe = nos; }
-         else{ noe->next = temp; noe = temp;}
+      if(temp->data % 2 == 1){
+         if(nos == NULL){
+             nos = temp;
+         }
+         else{
+             noe->next = temp;
+         }
+         noe = temp;
       }
       else{
-         if(nes == NULL){ nes = temp; nee = nes; }
-         else{ nee->next = temp; nee = temp;}           
+         if(nes == NULL){
+             nes = temp;
+         }
+         else{
+             nee->next = temp;
+         }           
+         nee = temp;
       }
       temp = temp->next;
-   } // separate odd-even list
+   }
    
    if(noe) noe->next = NULL;
    if(nee){ nee->next = nos; return nes; }
