@@ -43,61 +43,61 @@ node * root = NULL;
 
 
 /*
- * @desc: 
- *   insert function for ThreadedTree 
- *  for a node in threaded tree 
+ * @desc:
+ *   insert function for ThreadedTree
+ *  for a node in threaded tree
  *       left ptr points to inorder_predecessor
  *  and  right ptr points to inorder_successor
- * @param: 
+ * @param:
  *   value to be inserted
  */
-void insert ( int value ){
-  if (root == NULL) {
-    root = new node();
-    root->data = value;
-    return;
-  }
-
-  node * n = new node();
-  n->data  = value;
-  node * curr = root;
-  node * inorder_s = NULL, *inorder_p = NULL;
-  while(1){
-    if(curr->data >= value){
-       if(curr->left && curr->left->data > value) { 
-            curr = curr->left;
-       }
-       else{
-            inorder_s = curr;            
-            curr->left = n;
-            break;
-       }
+void insert(int value){
+    if(root == NULL) {
+        root = new node();
+        root->data = value;
+        return;
     }
-    else{
-        if(curr->right && curr->right->data < value){
-            curr = curr->right;
+
+    node * n = new node();
+    n->data  = value;
+    node * curr = root;
+    node * inorder_s = NULL, *inorder_p = NULL;
+    while(1){
+        if(curr->data >= value){
+            if(curr->left && curr->left->data > value) {
+                curr = curr->left;
+           }
+           else{
+               inorder_s = curr;
+               curr->left = n;
+               break;
+           }
         }
         else{
-            inorder_p = curr;
-            curr->right = n;
-            break;
-       }
+            if(curr->right && curr->right->data < value){
+                curr = curr->right;
+            }
+            else{
+                inorder_p = curr;
+                curr->right = n;
+                break;
+           }
+        }
     }
-  }
-  n->left  = inorder_p;
-  n->right = inorder_s;  
-  return;
+    n->left  = inorder_p;
+    n->right = inorder_s;
+    return;
 }
 
 /*
- * @desc: 
- *   iterative inorder traversal of a Threaded-Tree 
- * @param: 
+ * @dec:
+ *   iterative inorder traversal of a Threaded-Tree
+ * @param:
  *   root node of the tree
  */
 void iterative_inorder( node * root){
    if(root == NULL) return;
-  
+
 //   rec_inorder(root->left);
    std::cout << root->data << "  ";
 //   rec_inorder(root->right);

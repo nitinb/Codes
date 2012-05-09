@@ -75,12 +75,12 @@ void insert ( int value ){
 /*
  * @desc: 
  *   recursive inorder traversal of tree 
- * @param: 
- *   root node of the tree/sub-tree 
+ * @param:
+ *   root node of the tree/sub-tree
  */
 void rec_inorder(node * temp){
    if(temp == NULL) return;
-  
+
    rec_inorder(temp->left);
    std::cout << temp->data << "  ";
    rec_inorder(temp->right);
@@ -89,71 +89,78 @@ void rec_inorder(node * temp){
 
 int count_nodes(node * temp){
   if(temp == NULL) return 0;
-  else return 1 + count_nodes(temp->left) + count_nodes(temp->right) ;   
+  else return 1 + count_nodes(temp->left) + count_nodes(temp->right);
 }
 
 #define max(a,b) a>b?a:b
-int depth(node * temp){    
+int depth(node * temp){
     if(temp == NULL) { return 0; }
-    else { 
-      int ld = depth(temp->left);
-      int rd = depth(temp->right);
-      return 1 + (max(ld,rd)); 
+    else{
+        int ld = depth(temp->left);
+        int rd = depth(temp->right);
+        return 1 + (max(ld,rd));
     }
 }
 
 bool has_path_sum(node * temp, int sum){
-  if(temp == NULL && sum == 0) return true;
-  if(temp == NULL && sum != 0) return false;
-  else{
-    return (has_path_sum(temp->left, sum-temp->data)||has_path_sum(temp->right, sum-temp->data));
+  if(temp == NULL){
+      return sum == 0;
   }
+
+  if(sum < 0){
+      return false;
+  }
+
+  return (has_path_sum(temp->left, sum-temp->data) || has_path_sum(temp->right, sum-temp->data));
 }
 
 void print_path(node *temp, int arr[], int len){
-  if(temp != NULL){ arr[len++] = temp->data; }
-  
-  if(temp == NULL || !(temp->left || temp->right) ){//leaf node(both children are null)
-     for(int i = 0; i < len; i++) std::cout << arr[i] <<" ";
-     std::cout << std::endl;
-     return;
-  }
-  else {
-    if(temp->left != NULL) print_path(temp->left, arr, len);
-    if(temp->right != NULL) print_path(temp->right, arr, len);    
-  }
+    if(temp != NULL){ arr[len++] = temp->data; }
+
+    if(temp == NULL || !(temp->left || temp->right) ){//leaf node(both children are null)
+        for(int i = 0; i < len; i++) std::cout << arr[i] <<" ";
+        std::cout << std::endl;
+        return;
+    }
+    else{
+        if(temp->left != NULL) print_path(temp->left, arr, len);
+        if(temp->right != NULL) print_path(temp->right, arr, len);
+    }
 }
 
 void mirror_a_tree(node *temp){
-  if(temp == NULL){ return; }
-  else{
-     node *swap = temp->left;
-     temp->left = temp->right;
-     temp->right= swap;
-     mirror_a_tree(temp->left);
-     mirror_a_tree(temp->right);     
-  }
+    if(temp == NULL){
+        return;
+    }
+
+    mirror_a_tree(temp->left);
+    mirror_a_tree(temp->right);
+    node *swap = temp->left;
+    temp->left = temp->right;
+    temp->right= swap;
 }
 
 void double_tree(node *temp){
-  if(temp == NULL){ return; }
-  else{
-     node *nn   = new node();
-     nn->data   = temp->data;
-     nn->left   = temp->left;
-     temp->left = nn;
-     double_tree(temp->left->left);
-     double_tree(temp->right);
-  }
+    if(temp == NULL){
+        return;
+    }
+
+    node *nn   = new node();
+    nn->data   = temp->data;
+    nn->left   = temp->left;
+    temp->left = nn;
+    double_tree(temp->left->left);
+    double_tree(temp->right);
 }
 
 bool same_tree(node *temp1, node *temp2){
-   if(!(temp1 || temp2)) return true; // both are null
-   else if(!(temp1 && temp2)) return false; // one of them is null
-   else{ 
+    if(temp1 == NULL && temp2 == NULL) return true;
+
+    if(temp1 == NULL || temp2 == NULL) return false;
+
     if(temp1->data != temp2->data) return false;
-    else return (same_tree(temp1->left,temp2->left)&&same_tree(temp1->right,temp2->right) );
-   }
+
+    return (same_tree(temp1->left, temp2->left) && same_tree(temp1->right, temp2->right));
 }
 node *root2 = NULL;
 
@@ -175,7 +182,7 @@ int main(){
     if(value == -1) break;
     insert(value);
   }
-  
+
   rec_inorder(root);
   std::cout << std::endl;
 
