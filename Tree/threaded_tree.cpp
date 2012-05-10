@@ -58,34 +58,34 @@ void insert(int value){
         return;
     }
 
-    node * n = new node();
+    node *n = new node();
     n->data  = value;
-    node * curr = root;
-    node * inorder_s = NULL, *inorder_p = NULL;
-    while(1){
+    node *curr = root, *parent = NULL, *inorder_s = NULL, *inorder_p = NULL;
+    bool add_to_left = true;
+    while(curr != NULL){
+        parent = curr;
         if(curr->data >= value){
-            if(curr->left && curr->left->data > value) {
-                curr = curr->left;
-           }
-           else{
-               inorder_s = curr;
-               curr->left = n;
-               break;
-           }
+            inorder_s = curr;
+            curr = curr->left;
+            add_to_left = true;
         }
         else{
-            if(curr->right && curr->right->data < value){
-                curr = curr->right;
-            }
-            else{
-                inorder_p = curr;
-                curr->right = n;
-                break;
-           }
+            inorder_p = curr;
+            curr = curr->right;
+            add_to_left = false;
         }
     }
-    n->left  = inorder_p;
-    n->right = inorder_s;
+
+    if(add_to_left == true){
+        parent->left = n;
+        n->right = parent;
+        n->left = inorder_p;
+    }
+    else{
+        parent->right = n;
+        n->left = parent;
+        n->right = inorder_s;
+    }
     return;
 }
 

@@ -103,11 +103,11 @@ void rec_inorder( node * root){
  * @desc: 
  *   recursive pre-order traversal of tree 
  * @param: 
- *   root node of the tree/sub-tree 
+ *   root node of the tree/sub-tree
  */
 void rec_preorder( node * root){
    if(root == NULL) return;
-  
+
    std::cout << root->data << "  ";
    rec_preorder(root->left);
    rec_preorder(root->right);
@@ -122,12 +122,11 @@ int search_array(int *a, int n, int key){
 }
 
 node* make_tree(int *in_order, int *pre_order, int start, int end, int max){
-    static int preorder_start = 0;  
- 
-    if(preorder_start >= max) return NULL;
-    if(start < 0) return NULL;
-    if(end > max) return NULL;
-    if(end < start) return NULL;
+    static int preorder_start = 0;
+
+    if(preorder_start >= max || start < 0 || end > max || end < start){
+        return NULL;
+    }
 
     int index = search_array(in_order, max, pre_order[preorder_start]);
     node * n = new node();
