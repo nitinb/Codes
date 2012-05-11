@@ -103,57 +103,56 @@ void rec_inorder(node * root){
 
 
 bool do_stuff(node * root, node * node1, node * node2, node ** parent1, node ** parent2){
+    if(root == NULL){
+         return false;
+    }
+    
+    std::cout << "func call, data: " << root->data << std::endl;
+    
+    if(root->left == node1 || root->right == node1){
+         std::cout << "set parent1, data: " << root->data << std::endl;
+         *parent1 = root;
+    }
+    
+    if(root->left == node2 || root->right == node2){
+         std::cout << "set parent2, data: " << root->data << std::endl;                   
+         *parent2 = root;
+    }
+    
+    if(*parent1 && *parent2){
+         return true;
+    }
+    
+    if(do_stuff(root->left, node1, node2, parent1, parent2) ||
+       do_stuff(root->right, node1, node2, parent1, parent2)){
+         if(*parent1 == NULL && *parent2 == NULL){
+             *parent1 = root;
+             *parent2 = root;
+         }
+       
+         if(parent1 == NULL){
+             *parent1 = root;
+         }
+         
+         if(parent2 == NULL){
+             *parent2 = root;
+         }
 
-     if(root == NULL){
-          return false;
-     }
-     
-     std::cout << "func call, data: " << root->data << std::endl;
-     
-     if(root->left == node1 || root->right == node1){
-          std::cout << "set parent1, data: " << root->data << std::endl;
-          *parent1 = root;
-     }
-     
-     if(root->left == node2 || root->right == node2){
-          std::cout << "set parent2, data: " << root->data << std::endl;                   
-          *parent2 = root;
-     }
-     
-     if(*parent1 && *parent2){
-          return true;
-     }
-     
-     if(do_stuff(root->left, node1, node2, parent1, parent2) ||
-        do_stuff(root->right, node1, node2, parent1, parent2)){
-          if(*parent1 == NULL && *parent2 == NULL){
-               *parent1 = root;
-               *parent2 = root;
-          }
-        
-          if(parent1 == NULL){
-               *parent1 = root;
-          }
-          
-          if(parent2 == NULL){
-               *parent2 = root;
-          }
-
-          if(*parent1 == *parent2){
-               std::cout << "lca node data: " << (*parent1)->data << std::endl;
-               return true;
-          }
-          
-          return true;
-     }
-     return false;
+         if(*parent1 == *parent2){
+             std::cout << "lca node data: " << (*parent1)->data << std::endl;
+             return true;
+         }
+         
+         return true;
+    }
+    return false;
 }
 
 
-node * find_lca(node * root, node * node1, node * node2){
-     node * parent1 = NULL, * parent2 = NULL;
-     do_stuff(root, node1, node2, &parent1, &parent2);
-     return parent1;
+node* find_lca(node * root, node * node1, node * node2){
+    node * parent1 = NULL, * parent2 = NULL;
+    do_stuff(root, node1, node2, &parent1, &parent2);
+    return parent1;
 }
 
 

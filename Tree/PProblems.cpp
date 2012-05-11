@@ -111,17 +111,16 @@ bool has_path_sum(node * temp, int sum){
 }
 
 void print_path(node *temp, int arr[], int len){
-  if(temp != NULL){ arr[len++] = temp->data; }
-  
-  if(temp == NULL || !(temp->left || temp->right) ){//leaf node(both children are null)
-     for(int i = 0; i < len; i++) std::cout << arr[i] <<" ";
-     std::cout << std::endl;
-     return;
-  }
-  else {
+    if(temp != NULL){ arr[len++] = temp->data; }
+    
+    if(temp == NULL || (temp->left == NULL && temp->right == NULL)){
+        for(int i = 0; i < len; i++) std::cout << arr[i] <<" ";
+        std::cout << std::endl;
+        return;
+    }
+
     if(temp->left != NULL) print_path(temp->left, arr, len);
     if(temp->right != NULL) print_path(temp->right, arr, len);    
-  }
 }
 
 void mirror_a_tree(node *temp){
