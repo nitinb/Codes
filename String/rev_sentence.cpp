@@ -55,28 +55,30 @@ void select_reverse(char *strA){
 
    while(1){
        if(strA[curr_pos] == ' ' || strA[curr_pos] == '\0'){
-          final_pos = curr_pos;
-          if(DEBUG) std::cout << "ini pos=" << ini_pos << "; final pos=" << final_pos << std::endl;
-          for(int i = 0; i < (final_pos-ini_pos)/2; i++){
-             ch      = strA[ini_pos + i];
-             strA[ini_pos + i] = strA[final_pos-1-i];
-             strA[final_pos-1-i] = ch;
-          }
-          if(strA[curr_pos] == '\0') break;
-          ini_pos = final_pos+1;
+           final_pos = curr_pos;
+           if(DEBUG) std::cout << "ini pos=" << ini_pos << "; final pos=" << final_pos << std::endl;
+
+           for(int i = 0; i < (final_pos-ini_pos)/2; i++){
+               ch = strA[ini_pos + i];
+               strA[ini_pos + i] = strA[final_pos-1-i];
+               strA[final_pos-1-i] = ch;
+           }
+
+           if(strA[curr_pos] == '\0'){
+               break;
+           }
+
+           ini_pos = final_pos+1;
        }
        curr_pos++;
    }
 }
 
 int main(){
-//    char strA[500];
     char *strA = new char[500];
     scanf("%[^\n]",strA);
     if(DEBUG) printf("%s*\n",strA);
 
-//    rec_reverse(strA);
-//    printf("\n");
     iter_reverse(strA);
     if(DEBUG) printf("%s\n",strA);
 

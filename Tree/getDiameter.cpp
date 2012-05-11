@@ -56,7 +56,7 @@ void insert ( int value ){
     if(curr == NULL){
        node * n = new node();
        n->data  = value;
-       if( value < prev->data ) prev->left = n; 
+       if( value < prev->data ) prev->left = n;
        else prev->right = n;
        break;
     }
@@ -65,14 +65,14 @@ void insert ( int value ){
 }
 
 /*
- * @desc: 
- *   recursive inorder traversal of tree 
- * @param: 
- *   root node of the tree/sub-tree 
+ * @desc:
+ *   recursive inorder traversal of tree
+ * @param:
+ *   root node of the tree/sub-tree
  */
 void rec_inorder( node * root){
    if(root == NULL) return;
-  
+
    rec_inorder(root->left);
    std::cout << root->data << "  ";
    rec_inorder(root->right);
@@ -84,13 +84,13 @@ int getDiameter(node *temp, int *height){
         *height = 0;
         return 0;
     }
-    int lh = 0, rh = 0, ld = 0, rd = 0; 
- 
+    int lh = 0, rh = 0, ld = 0, rd = 0;
+
     ld = getDiameter(temp->left, &lh);
     rd = getDiameter(temp->right,&rh);
 
     *height = max(lh, rh) + 1;
-    return max(max(lh+rh+1, ld), rd);
+    return max(max(lh + rh + 1, ld), rd);
 }
 
 int main(){
