@@ -12,6 +12,10 @@ struct rect{
             width = 0;
             height = 0;
         }
+
+        void print(int i, int j){
+            std::cout << "index: " << i << "," << j << " width: " << width << " height: " << height << std::endl;
+        }
 };
 
 void print_array(int *input, int n, int m){
@@ -39,17 +43,19 @@ void find_largest_rectangle(int *input, int n, int m){
         if(*(input + i * m + j) == 1){
             store[i][j].height = store[i - 1][j].height + 1;
             store[i][j].width = 1;
+            // store[i][j].print(i, j);
             if(store[i][j].width * store[i][j].height > max_area){
                 max_area = store[i][j].width * store[i][j].height;
             }
         }
     }
 
-    for(int j = 1; j < n; j++){
+    for(int j = 1; j < m; j++){
         int i = 0;
         if(*(input + i * m + j) == 1){
             store[i][j].width = store[i][j - 1].width + 1;
             store[i][j].height = 1;
+            // store[i][j].print(i, j);
             if(store[i][j].width * store[i][j].height > max_area){
                 max_area = store[i][j].width * store[i][j].height;
             }
