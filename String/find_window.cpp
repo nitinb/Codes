@@ -28,33 +28,52 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 #define DEBUG 1
 #define MAX_SIZE 26
- 
+#define NINF -100
+
 void find_window(std::string strA, std::string strB){
    int  storage[MAX_SIZE] = {0};
    bool flag[MAX_SIZE]    = {false};
    int  len = strB.length();
-   int  curr_min = strA.length();
+   int  window_size = 100000;
 
    for(int i = 0; i < strB.length(); i++){
        storage[strB[i]-'a']++;
        flag[strB[i]-'a'] = true;
    }
 
-   int j = -1;
+   int start = -1;
    for(int i = 0; i < strA.length(); i++){
-       if( storage[strA[i]-'a'] ){
-           if( j == -1){ j = i; }
-           storage[strA[i]-'a']--;
-           len--;
-       }
-       if(len == 0){
-           curr_min = curr_min > i-j+1 ? i-j+1 : curr_min;
-           std::cout << "found a window; start index=" << j << "; last index=" << i << "; size=" << curr_min << std::endl;
-           if(i == strA.length()-1 || curr_min == strB.length()) break;
+       if(flag[strA[i]-'a'] == true){
+           if(start == -1){
+               start = i;
+           }
 
-           storage[strA[j]-'a']++;
-           len++;  j++;
-           while(flag[strA[j++]-'a']){ }
+           storage[strA[i]-'a']--;
+           if(storage[strA[i]-'a'] == 0){
+               len--;
+           }
+       }
+
+       if(len == 0){
+           window_size = window_size > i-start+1 ? i-start+1 : window_size;
+           std::cout << "found a window; start index=" << start << "; last index=" << i << "; min size=" << window_size << std::endl;
+
+           storage[strA[start]-'a']++;
+           if(storage[strA[start]-'a'] > 0){
+               len++;
+           }
+
+           do{
+               start++;
+           }while(strA[start] != '\0' && !flag[strA[start]-'a']);
+
+
+           if(len == 0){
+               window_size = window_size > i-start+1 ? i-start+1 : window_size;
+               std::cout << "found a window; start index=" << start << "; last index=" << i << "; min size=" << window_size << std::endl;
+           }
+
+           if(i == strA.length()-1 || window_size == strB.length()) break;
        }
    }
 }
