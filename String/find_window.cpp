@@ -54,7 +54,7 @@ void find_window(std::string strA, std::string strB){
            }
        }
 
-       if(len == 0){
+       while(len == 0){
            window_size = window_size > i-start+1 ? i-start+1 : window_size;
            std::cout << "found a window; start index=" << start << "; last index=" << i << "; min size=" << window_size << std::endl;
 
@@ -67,14 +67,8 @@ void find_window(std::string strA, std::string strB){
                start++;
            }while(strA[start] != '\0' && !flag[strA[start]-'a']);
 
-
-           if(len == 0){
-               window_size = window_size > i-start+1 ? i-start+1 : window_size;
-               std::cout << "found a window; start index=" << start << "; last index=" << i << "; min size=" << window_size << std::endl;
-           }
-
-           if(i == strA.length()-1 || window_size == strB.length()) break;
        }
+       if(i == strA.length()-1 || window_size == strB.length()) break;
    }
 }
 
