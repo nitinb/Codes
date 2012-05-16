@@ -28,40 +28,54 @@ _._._._._._._._._._._._._._._._._._._._._.*/
 
 void find_count_elements(int *arr, int len){
    int i = 1;
-   int count_sw = 0;
+   int count_swap = 0;
    while(i < len){
-      if(arr[i] < 0 ){ i++; count_sw = 0; continue; }
+      if(DEBUG) std::cout << i << " " << arr[i] << std::endl;
+
+      if(arr[i] < 0){
+          i++;
+          count_swap = 0;
+          continue;
+      }
 
       int temp = arr[i];
       if(arr[temp] > 0){
-         arr[i]    = arr[temp];
-         arr[temp] = -1; //First time number is encountered!!
-         count_sw++;
-         if(count_sw > len-1){ i++; count_sw = 0; }
+          arr[i] = arr[temp];
+          arr[temp] = -1;
+          count_swap++;
+          if(count_swap > len-1){
+              i++;
+              count_swap = 0;
+          }
       }
-      else{ 
-         arr[temp]--;  arr[i] = -(len+2); i++; count_sw = 0;
+      else{
+          if(arr[temp] < -1 * len){
+              arr[temp] = 0;
+          }
+          arr[temp]--;
+          arr[i] = -(len+2);
+          i++;
+          count_swap = 0;
       }
-          
-      if(DEBUG) std::cout << arr[i] << " " << i << std::endl;
    }
 }
 
 int main(){
-  int _SIZE = 6;
-  int SIZE = _SIZE + 1;
-  int *arr = (int *)malloc(SIZE*sizeof(int));
+    int _SIZE = 6;
+    int SIZE = _SIZE + 1;
+    int *arr = (int *)malloc(SIZE*sizeof(int));
 
-  for(int i = 1; i < SIZE; i++){
-    std::cin >> arr[i];
-  }
-  std::cout << std::endl;
-   
-  find_count_elements(arr, SIZE);
-  for(int i = 1; i < SIZE; i++){
-    arr[i] *= -1;
-    if(arr[i] < SIZE)
-      std::cout << "count of "<< i << " ==> " << arr[i] << std::endl;
-  }  
-  while(1) continue;
+    for(int i = 1; i < SIZE; i++){
+        std::cin >> arr[i];
+    }
+    std::cout << std::endl;
+
+    find_count_elements(arr, SIZE);
+    for(int i = 1; i < SIZE; i++){
+        arr[i] *= -1;
+        if(arr[i] < SIZE){
+            std::cout << "count of "<< i << " ==> " << arr[i] << std::endl;
+        }
+    }
+    while(1) continue;
 }
