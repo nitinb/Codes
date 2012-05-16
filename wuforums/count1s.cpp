@@ -27,17 +27,17 @@ int m_count_number_1(int num){
 
 int main(){
 
-  int num, t_num; // how many numbers ???
-  num = 10; t_num = 76;
+  int num; // how many numbers ???
+  num = 10;
   int curr_num = 0, total = 0;
 
-  while(num != 0 && t_num != 0){
+  while(num != 0){
     total += m_count_number_1(curr_num);
     if(total == curr_num) { 
        num--;
        std::cout << "\t **spcl number** " << curr_num << std::endl;
     }
     std::cout << "curr num - " << curr_num << " total 1's- " << total << std::endl;
-    curr_num++; t_num--;
+    curr_num++;
   }
 }
