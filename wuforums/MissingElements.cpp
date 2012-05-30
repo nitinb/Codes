@@ -32,20 +32,16 @@ void find_missing_elements(int *arr, int len){
     while(i < len){
         int temp = arr[i];
 
-        if(temp == -1){
+        if(temp == -1 || temp == i + 1){
             i++;
+            count_sw = 0;
             continue;
         }
-        else if(temp != i+1){
-            arr[i]   = arr[temp-1];
-            arr[temp-1] = temp;
-            count_sw++;
-            if(count_sw > len-1){
-                i++;
-                count_sw = 0;
-            }
-        }
-        else{
+
+        arr[i]   = arr[temp-1];
+        arr[temp-1] = temp;
+        count_sw++;
+        if(count_sw > len-1){
             i++;
             count_sw = 0;
         }
@@ -61,12 +57,12 @@ int main(){
   for(int i = 0; i < SIZE; i++){
     arr[i] = -1;
   }
-  
+
   for(int i = 0; i < num_te; i++){
     std::cin >> arr[i];
   }
   std::cout << std::endl;
-    
+
   find_missing_elements(arr, SIZE);
   for(int i = 0; i < SIZE; i++){
     std::cout << arr[i];
