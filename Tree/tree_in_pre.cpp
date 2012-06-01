@@ -121,9 +121,7 @@ int search_array(int *a, int n, int key){
    std::cout << "error, " << key << " not found in array!!" << std::endl;
 }
 
-node* make_tree(int *in_order, int *pre_order, int start, int end, int max){
-    static int preorder_start = 0;
-
+node* make_tree(int *in_order, int *pre_order, int start, int end, int max, int & preorder_start){
     if(preorder_start >= max || start < 0 || end > max || end < start){
         return NULL;
     }
@@ -133,8 +131,8 @@ node* make_tree(int *in_order, int *pre_order, int start, int end, int max){
     n->data  = pre_order[preorder_start];
     preorder_start++;
 
-    n->left  = make_tree(in_order, pre_order, start, index-1, max);
-    n->right = make_tree(in_order, pre_order, index+1, end, max);
+    n->left  = make_tree(in_order, pre_order, start, index-1, max, preorder_start);
+    n->right = make_tree(in_order, pre_order, index+1, end, max, preorder_start);
     return n;
 }
 
@@ -158,16 +156,17 @@ int main(){
   int in_order[MAX_SIZE] = {0}, pre_order[MAX_SIZE] = {0};
 //  std::cout << "in-order traversal" << std::endl;
   FORI(i, 0, num_nodes){
-     std::cin >> in_order[i];  
+     std::cin >> in_order[i];
   }
 
 //  std::cout << "pre-order traversal" << std::endl;
   FORI(i, 0, num_nodes){
      std::cin >> pre_order[i];
   }
-  
-  node *n_root = NULL; 
-  n_root = make_tree(in_order, pre_order, 0, num_nodes, num_nodes);
+
+  node *n_root = NULL;
+  int preorder_start = 0;
+  n_root = make_tree(in_order, pre_order, 0, num_nodes, num_nodes, preorder_start);
   rec_inorder(n_root);
   std::cout << std::endl;
 }
