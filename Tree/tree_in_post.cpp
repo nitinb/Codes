@@ -1,6 +1,6 @@
 /* -.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
 
-* File Name : tree_in_pre.cpp
+* File Name : tree_in_post.cpp
 
 * Purpose :
 
@@ -56,9 +56,9 @@ node * root = NULL;
 
 
 /*
- * @desc: 
+ * @desc:
  *   insert function for BST **
- * @param: 
+ * @param:
  *   value to be inserted
  */
 void insert ( int value ){
@@ -76,7 +76,7 @@ void insert ( int value ){
     if(curr == NULL){
        node * n = new node();
        n->data  = value;
-       if( value < prev->data ) prev->left = n; 
+       if( value < prev->data ) prev->left = n;
        else prev->right = n;
        break;
     }
@@ -85,14 +85,16 @@ void insert ( int value ){
 }
 
 /*
- * @desc: 
- *   recursive inorder traversal of tree 
- * @param: 
- *   root node of the tree/sub-tree 
+ * @desc:
+ *   recursive inorder traversal of tree
+ * @param:
+ *   root node of the tree/sub-tree
  */
 void rec_inorder( node * root){
-   if(root == NULL) return;
-  
+   if(root == NULL){
+       return;
+   }
+
    rec_inorder(root->left);
    std::cout << root->data << "  ";
    rec_inorder(root->right);
@@ -100,39 +102,48 @@ void rec_inorder( node * root){
 }
 
 /*
- * @desc: 
- *   recursive pre-order traversal of tree 
- * @param: 
+ * @desc:
+ *   recursive post-order traversal of tree
+ * @param:
  *   root node of the tree/sub-tree
  */
-void rec_preorder( node * root){
+void rec_postorder( node * root){
    if(root == NULL) return;
 
+   rec_postorder(root->left);
+   rec_postorder(root->right);
    std::cout << root->data << "  ";
-   rec_preorder(root->left);
-   rec_preorder(root->right);
    return;
 }
 
-int search_array(int *a, int n, int key){
-   FORI(i, 0, n){
+int search_array(int *a, int start, int end, int key){
+   FORI(i, start, end+1){
        if(a[i] == key){ return i; }
    }
-   std::cout << "error, " << key << " not found in array!!" << std::endl;
+   return -1;
 }
 
-node* make_tree(int *in_order, int *pre_order, int start, int end, int max, int & preorder_start){
-    if(preorder_start >= max || start < 0 || end > max || end < start){
+node* make_tree(int *in_order, int *post_order, int start, int end, int max, int &postorder_start){
+//    std::cout << "Call=> start: " << start << " end: " << end << " postorder start: " << postorder_start << std::endl;
+
+    if(postorder_start < 0 || start < 0 || end > max || end < start){
         return NULL;
     }
 
-    int index = search_array(in_order, max, pre_order[preorder_start]);
-    node * n = new node();
-    n->data  = pre_order[preorder_start];
-    preorder_start++;
+    int index = search_array(in_order, start, end, post_order[postorder_start]);
+    if(index == -1){
+        return NULL;
+    }
 
-    n->left  = make_tree(in_order, pre_order, start, index-1, max, preorder_start);
-    n->right = make_tree(in_order, pre_order, index+1, end, max, preorder_start);
+    node *n = new node();
+    n->data  = post_order[postorder_start];
+    postorder_start--;
+//    std::cout << "\tCreated node value: " << n->data << std::endl;
+
+//    std::cout << "\t right tree" << std::endl;
+    n->right = make_tree(in_order, post_order, index+1, end, max, postorder_start);
+//    std::cout << "\t left tree" << std::endl;
+    n->left  = make_tree(in_order, post_order, start, index-1, max, postorder_start);
     return n;
 }
 
@@ -149,24 +160,24 @@ int main(){
   std::cout << "in-order traversal of tree" << std::endl;
   rec_inorder(root);
   std::cout << std::endl;
-  std::cout << "pre-order traversal of tree" << std::endl;
-  rec_preorder(root);
+  std::cout << "post-order traversal of tree" << std::endl;
+  rec_postorder(root);
   std::cout << std::endl;
 
-  int in_order[MAX_SIZE] = {0}, pre_order[MAX_SIZE] = {0};
+  int in_order[MAX_SIZE] = {0}, post_order[MAX_SIZE] = {0};
 //  std::cout << "in-order traversal" << std::endl;
   FORI(i, 0, num_nodes){
      std::cin >> in_order[i];
   }
 
-//  std::cout << "pre-order traversal" << std::endl;
+//  std::cout << "post-order traversal" << std::endl;
   FORI(i, 0, num_nodes){
-     std::cin >> pre_order[i];
+     std::cin >> post_order[i];
   }
 
   node *n_root = NULL;
-  int preorder_start = 0;
-  n_root = make_tree(in_order, pre_order, 0, num_nodes, num_nodes, preorder_start);
+  int postorder_start = num_nodes - 1;
+  n_root = make_tree(in_order, post_order, 0, num_nodes, num_nodes, postorder_start);
   rec_inorder(n_root);
   std::cout << std::endl;
 }
