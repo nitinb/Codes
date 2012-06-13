@@ -44,7 +44,7 @@ int levenshtein_dist(std::string src, std::string dest){
          dist[i][j] = dist[i-1][j-1];
        }
        else{
-         dist[i][j] = min( dist[i-1][j] + 1, dist[i][j-1] + 1, dist[i-1][j-1] + 2 );
+         dist[i][j] = min(dist[i-1][j] + 1, dist[i][j-1] + 1, dist[i-1][j-1] + 1);
        }
     }
   }
