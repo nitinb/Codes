@@ -3,6 +3,9 @@
 http://en.wikipedia.org/wiki/Prim%27s_algorithm
 http://en.wikipedia.org/wiki/Dijkstra%27s_algorithm\
 
+Implementation of suffix tree and suffix array
+
+
 LCA
 BinomialHeap
 BinaryHeap
@@ -35,3 +38,7 @@ http://www.allisons.org/ll/AlgDS/Tree/Suffix/
 Kd Tree
 
 STL - sort, algorithms
+
+
+# Setup DNS
+http://askubuntu.com/questions/330148/how-do-i-do-a-complete-bind9-dns-server-configuration-with-a-hostname
