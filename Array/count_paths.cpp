@@ -22,7 +22,7 @@ int count(int posx, int posy, int M, int N, bool **grid){
 }
 
 int main(){
-    int M, N;
+    int M, N, total = 0;
     std::cin >> M >> N;
 
     bool **grid;
